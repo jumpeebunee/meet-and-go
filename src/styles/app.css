@@ -1,0 +1,17 @@
+.app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app__content {
+  width: 428px;
+  height: 926px;
+  background-color: grey;
+}
+
+.app__map {
+  width: 100%;
+  height: 100%;
+}
