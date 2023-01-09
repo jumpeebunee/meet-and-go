@@ -1,0 +1,12 @@
+.appInput {
+  padding: 14px 20px;
+  font-size: 18px;
+  line-height: 22px;
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(217, 217, 217, 0.2);
+  border-radius: 10px;
+}
+
+.appInput::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}

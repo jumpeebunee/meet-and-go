@@ -1,0 +1,31 @@
+
+.create-point__info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.create-point__interest {
+  margin-top: 25px;
+}
+
+.create-point__interest-heading {
+  margin-bottom: 15px;
+}
+
+.create-point__interest-list {
+  margin-top: 10px;
+}
+
+.create-point__interest-item {
+  font-size: 16px;
+  line-height: 19px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.create-point__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
