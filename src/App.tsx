@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <div className='app'>
-      <div className='app__content'>
+      <div data-testid="map" className='app__content'>
         <YMaps
           query={{
             apikey: "bb874fcf-3722-4db8-8062-76756ffbcd45",

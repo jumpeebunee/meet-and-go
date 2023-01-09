@@ -17,7 +17,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, setEventCords, eve
   return (  
     <AppModal style={{paddingTop: '60px'}} isOpen={isOpen} setIsOpen={setIsOpen}>
       <div>
-        <h2 className='heading'>Create a new event <br/> with friends</h2>
+        <h2 data-testid="create-point" className='heading'>Create a new event <br/> with friends</h2>
         <div className='create-point__info'>
           <AppInput placeholder='Event name'/>
           <AppInput placeholder='Event location'/>

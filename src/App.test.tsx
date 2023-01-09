@@ -1,15 +1,18 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import App from './App';
 
-test('renders learn react link', () => {
-  const { getByText } = render(
+test('modal is open', () => {
+  render(
     <Provider store={store}>
       <App />
     </Provider>
-  );
+  )
 
-  expect(getByText(/learn/i)).toBeInTheDocument();
-});
+  const map = screen.getByTestId('map');
+  fireEvent.click(map);
+  const createPoint = screen.getByTestId('create-point');
+  expect(createPoint).toBeInTheDocument();
+})
