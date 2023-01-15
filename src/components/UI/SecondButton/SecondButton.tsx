@@ -3,11 +3,12 @@ import cl from './secondButton.module.css';
 
 interface MainButtonProps {
   text: string,
+  handle: Function,
 }
 
-const SecondButton:FC<MainButtonProps> = ({text}) => {
+const SecondButton:FC<MainButtonProps> = ({text, handle}) => {
   return (
-    <button className={cl.mainButton}>{text}</button>
+    <button onClick={() => handle()} className={cl.mainButton}>{text}</button>
   )
 }
 
