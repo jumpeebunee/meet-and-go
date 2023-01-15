@@ -5,7 +5,7 @@ interface AppModalProps {
   isOpen: Boolean,
   setIsOpen: Function,
   children: ReactNode,
-  style: React.CSSProperties,
+  style?: React.CSSProperties,
 }
 
 const AppModal:FC<AppModalProps> = ({isOpen, setIsOpen, children, style}) => {

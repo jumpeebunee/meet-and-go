@@ -37,7 +37,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, setEve
 
   const handleCreate = () => {
     if (eventName.length > 2 && eventLocation.length > 2) {
-      setEvents((prev: IEvent[]) => [...prev,  {id: nanoid(), title: eventName, cords: eventCords}])
+      setEvents((prev: IEvent[]) => [...prev,  {id: nanoid(), title: eventName, cords: eventCords, interest: eventInterest}])
       setIsOpen(false);
     }
   }
