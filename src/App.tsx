@@ -32,6 +32,7 @@ const App = () => {
           <Map onClick={(e:any) => createEvent(e)} className='app__map' defaultState={defaultState}>
             {events.map(event =>
               <Placemark
+                onClick={() => console.log('q')}
                 key={event.id}
                 options={{
                   iconLayout: 'default#image',
@@ -51,7 +52,6 @@ const App = () => {
           setIsOpen={setIsOpen}
           setEvents={setEvents}
           eventCords={eventCords}
-          setEventCords={setEventCords}
         />
       </div>
     </div>

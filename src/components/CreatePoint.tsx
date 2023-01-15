@@ -4,16 +4,17 @@ import AppInput from "./UI/AppInput/AppInput"
 import AppModal from './UI/AppModal/AppModal';
 import MainButton from './UI/MainButton/MainButton';
 import SecondButton from './UI/SecondButton/SecondButton';
+import { IEvent } from '../types/types';
+import { nanoid } from '@reduxjs/toolkit';
 
 interface CreatePointProps {
   isOpen: boolean,
   setIsOpen: Function,
   setEvents: Function,
   eventCords: number[],
-  setEventCords: Function,
 }
 
-const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, setEventCords, eventCords, setEvents}) => {
+const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, setEvents}) => {
 
   const [eventName, setEventName] = useState('');
   const [eventLocation, setEventLocation] = useState('');
@@ -32,6 +33,13 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, setEventCords, eve
 
   const handleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && eventInterest.length <= 4) handleAdd();
+  }
+
+  const handleCreate = () => {
+    if (eventName.length > 2 && eventLocation.length > 2) {
+      setEvents((prev: IEvent[]) => [...prev,  {id: nanoid(), title: eventName, cords: eventCords}])
+      setIsOpen(false);
+    }
   }
 
   return (  
@@ -53,7 +61,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, setEventCords, eve
         </div>
       </div>
       <div className='create-point__buttons'>
-        <MainButton text='Continue'/>
+        <MainButton handle={() => handleCreate()} text='Continue'/>
         <SecondButton handle={() => setIsOpen(false)} text='Cancel'/>
       </div>
     </AppModal>
