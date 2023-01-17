@@ -48,16 +48,17 @@ const App = () => {
         >
           <Map onClick={(e:any) => createEvent(e)} className='app__map' defaultState={defaultState}>
             {events.map(event =>
-              <Placemark
-                onClick={() => openEvent(event.id)}
-                key={event.id}
-                options={{
-                  iconLayout: 'default#image',
-                  iconImageHref: '../point.svg',
-                  iconImageSize: [62, 85],
-                }}
-                geometry={event.cords} 
-              />
+            <div className='app__map-placemark' key={event.id}>
+                <Placemark
+                  onClick={() => openEvent(event.id)}
+                  options={{
+                    iconLayout: 'default#image',
+                    iconImageHref: '../point.svg',
+                    iconImageSize: [62, 85],
+                  }}
+                  geometry={event.cords} 
+                />
+              </div>
             )}
             <GeolocationControl options={{
               float: 'left'
