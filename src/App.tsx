@@ -3,6 +3,7 @@ import { YMaps, Map, Placemark, GeolocationControl } from '@pbe/react-yandex-map
 import CreatePoint from './components/CreatePoint';
 import { IEvent } from './types/types';
 import AboutEvent from './components/AboutEvent';
+import UserProfile from './components/UserProfile';
 
 const App = () => {
   const defaultState = {
@@ -12,6 +13,7 @@ const App = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isCurrentOpen, setIsCurrentOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', interest: []});
   const [eventCords, setEventCords] = useState([]);
   const [events, setEvents] = useState<IEvent[]>([
@@ -61,6 +63,9 @@ const App = () => {
               float: 'left'
             }} />
           </Map>
+          <div className='app__profile'>
+            <button onClick={() => setIsProfileOpen(true)} className='app__profile-avatar'></button>
+          </div>
         </YMaps>
         <CreatePoint 
           isOpen={isOpen}
@@ -72,6 +77,10 @@ const App = () => {
           isOpen={isCurrentOpen}
           setIsOpen={setIsCurrentOpen}
           currentEvent={currentEvent}
+        />
+        <UserProfile
+          isOpen={isProfileOpen}
+          setIsOpen={setIsProfileOpen}
         />
       </div>
     </div>

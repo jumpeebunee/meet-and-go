@@ -38,3 +38,23 @@
   /* filter: grayscale(1); */
 }
 
+.app__profile {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 196px;
+  height: 59px;
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  background: #FFFFFF;
+  border-radius: 40px;
+}
+
+.app__profile-avatar {
+  width: 47px;
+  height: 47px;
+  margin-right: 6px;
+  background: #1A1A1A;
+  border-radius: 50%;
+}
