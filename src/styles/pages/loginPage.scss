@@ -21,3 +21,26 @@
     color: #75D7A1;
   }
 }
+
+.login-page__password {
+  position: relative;
+}
+
+.login-page__password-icon {
+  width: 22px;
+  height: 15px;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  background-image: url(../../assets/password.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: transparent;
+  transform: translateY(-50%);
+}
+
+.login-page__password-icon_v {
+  width: 22px;
+  height: 18.5px;
+  background-image: url(../../assets/password-v.svg);
+}
