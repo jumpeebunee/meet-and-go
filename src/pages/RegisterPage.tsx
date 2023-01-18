@@ -3,11 +3,15 @@ import {createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState, FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../firebase';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../app/feautures/userSlice';
 import LoginBanner from "../components/LoginBanner"
 import AppInput from "../components/UI/AppInput/AppInput"
 import MainButton from "../components/UI/MainButton/MainButton"
 
 const RegisterPage = () => {
+
+  const dispatch = useDispatch();
 
   const [visible, setVisible] = useState(false);
   const [userInfo, setUserInfo] = useState({name: '', email: '', password: ''});
@@ -35,6 +39,7 @@ const RegisterPage = () => {
       try {
         const response = await createUserWithEmailAndPassword(auth, userInfo.email, userInfo.password);
         await updateProfile(response.user, { displayName: userInfo.name });
+        dispatch(addUser({username: userInfo.name, email: userInfo.email, uid: response.user.uid}))
       } catch (e: any) {
         const errorMessage = e.message;
         setServerError(errorMessage);

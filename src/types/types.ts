@@ -5,3 +5,9 @@ export type IEvent = {
   place: string,
   interest: string[],
 }
+
+export type IUser = {
+  username: string,
+  email: string,
+  uid: string,
+}

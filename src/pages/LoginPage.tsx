@@ -3,6 +3,8 @@ import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { auth } from '../firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import { useDispatch } from 'react-redux'
+import { addUser } from '../app/feautures/userSlice'
 import LoginBanner from "../components/LoginBanner"
 import AppInput from "../components/UI/AppInput/AppInput"
 import MainButton from "../components/UI/MainButton/MainButton"
@@ -10,6 +12,7 @@ import MainButton from "../components/UI/MainButton/MainButton"
 const LoginPage = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [visible, setVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -31,7 +34,11 @@ const LoginPage = () => {
     e.preventDefault();
     if (validate()) {
       try {
-        await signInWithEmailAndPassword(auth, userInfo.email, userInfo.password);
+        const res = await signInWithEmailAndPassword(auth, userInfo.email, userInfo.password);
+        const user = res.user;
+        if (user.email && user.displayName && user.uid) {
+          dispatch(addUser({username: user.displayName, email: user.email, uid: user.uid}));
+        }
         navigate('/');
       } catch (error: any) {
         const errorMessage = error.message;
