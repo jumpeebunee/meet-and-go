@@ -1,7 +1,10 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { YMaps, Map, Placemark, GeolocationControl } from '@pbe/react-yandex-maps';
-import CreatePoint from '../components/CreatePoint';
 import { IEvent } from '../types/types';
+import { currentUser } from '../app/feautures/userSlice';
+import CreatePoint from '../components/CreatePoint';
 import AboutEvent from '../components/AboutEvent';
 import UserProfile from '../components/UserProfile';
 
@@ -10,6 +13,9 @@ const MainPage = () => {
     center: [55.751574, 37.573856],
     zoom: 10,
   };
+
+  const user = useSelector(currentUser);
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isCurrentOpen, setIsCurrentOpen] = useState(false);
@@ -20,6 +26,12 @@ const MainPage = () => {
     {id: '1', title: 'Погулять c собакой', cords: [55.684758, 37.738521], place: 'Тульская', interest: ['Животные', 'Собаки', 'прогулка', 'Отдых']},
     {id: '2', title: 'Убить Фейма', cords: [56.34929007185356, 37.51838062216117], place: 'Дом Михаловых', interest: ['Убийство', 'Скотина', 'Предатель']},
   ]);
+
+  useEffect(() => {
+    if (!user.uid) {
+      navigate('/login');
+    } 
+  },[])
 
   function createEvent(e:any) {
     setIsOpen(true);

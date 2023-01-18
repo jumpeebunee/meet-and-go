@@ -1,22 +1,29 @@
 import '../styles/pages/loginPage.scss'
-import {createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useState, FormEvent } from 'react'
+import {createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
+import { useState, FormEvent, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { auth } from '../firebase';
-import { useDispatch } from 'react-redux';
-import { addUser } from '../app/feautures/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUser, currentUser } from '../app/feautures/userSlice';
 import LoginBanner from "../components/LoginBanner"
-import AppInput from "../components/UI/AppInput/AppInput"
-import MainButton from "../components/UI/MainButton/MainButton"
+import RegisterForm from '../components/RegisterForm';
 
 const RegisterPage = () => {
 
   const dispatch = useDispatch();
+  const user = useSelector(currentUser);
 
   const [visible, setVisible] = useState(false);
   const [userInfo, setUserInfo] = useState({name: '', email: '', password: ''});
   const [errors, setErrors] = useState({name: false, email: false, password: false})
   const [serverError, setServerError] = useState('');
+
+  useEffect(() => {
+    if (user.uid) {
+      signOut(auth);
+      dispatch(addUser({username: '', email: '', uid: ''}))
+    }  
+  }, [])
 
   const handleVisible = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -53,41 +60,14 @@ const RegisterPage = () => {
     <div className="app__content app__content_container app__content_login">
       <div className='login-page__content'>
         <LoginBanner/>
-        <form onSubmit={(e) => handleSubmit(e)} className="login-page__form">
-          <div>
-            <AppInput
-              style={{padding: '20px'}}
-              placeholder="Username"
-              onChange={(e) => setUserInfo({...userInfo, name: e.target.value})}
-            />
-            {errors.name && <p className='error'>Enter valid name</p>}
-          </div>
-          <div>
-            <AppInput
-              style={{padding: '20px'}}
-              placeholder="Email"
-              onChange={(e) => setUserInfo({...userInfo, email: e.target.value})}
-            />
-            {errors.email && <p className='error'>Enter valid email</p>}
-          </div>
-          <div>
-            <div className='login-page__password'>
-              <AppInput
-                autoComplete='true'
-                style={{padding: '20px'}}
-                placeholder="Password"
-                type={visible ? 'text' : 'password'}
-                onChange={(e) => setUserInfo({...userInfo, password: e.target.value})}
-              />
-              <button 
-                onClick={(e) => handleVisible(e)}
-                className={visible ? 'login-page__password-icon login-page__password-icon_v' : 'login-page__password-icon'}>
-              </button>
-            </div>
-            {errors.password && <p className='error'>Enter valid password</p>}
-          </div>
-          <MainButton text="Register"/>
-        </form>
+        <RegisterForm
+          userInfo={userInfo}
+          handleSubmit={handleSubmit}
+          setUserInfo={setUserInfo}
+          errors={errors}
+          visible={visible}
+          handleVisible={handleVisible}
+        />
         {serverError && <p className='error'>{serverError}</p>}
       </div>
       <p className='login-page__toggle'>Already register? <Link to="/login"><span>Sign in</span></Link></p>
