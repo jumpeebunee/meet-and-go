@@ -1,7 +1,12 @@
 import '../styles/components/userProfile.scss';
-import { FC } from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
+import { currentUserContent } from '../app/feautures/userSlice';
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from '../firebase';
 import AppModal from './UI/AppModal/AppModal'
 import SecondButton from './UI/SecondButton/SecondButton';
+import MainButton from './UI/MainButton/MainButton';
 
 interface UserProfileProps {
   isOpen: boolean,
@@ -9,6 +14,49 @@ interface UserProfileProps {
 }
  
 const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
+
+  const currentUser = useSelector(currentUserContent);
+
+  const [phone, setPhone] = useState(currentUser.phone);
+  const [town, setTown] = useState(currentUser.town);
+
+  const [isEdit, setIsEdit] = useState(false);
+
+  const handleEdit = async() => {
+    if (isEdit) {
+      const userRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userRef, {
+        phone,
+        town,
+      });
+      setIsEdit(false);
+    } else {
+      setIsEdit(true);
+    }
+  }
+
+  const changePhone = (e: ChangeEvent<HTMLInputElement>) => {
+    const target = e.target.value;
+    if ((+target || target.length === 0) && +target.length <= 12) {
+      setPhone(target);
+    }
+    return;
+  }
+
+  const changeTown = (e: ChangeEvent<HTMLInputElement>) => {
+    const target = e.target.value;
+    if (target.length > 0 && target.length < 12) {
+      setTown(target);
+    }
+    return;
+  }
+
+  useEffect(() => {
+    if (isEdit && !isOpen) {
+      setIsEdit(false);
+    }
+  },[isOpen])
+
   return (
     <AppModal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div>
@@ -16,29 +64,45 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
           <div className='user-profile__user-image'>
             <div className='user-profile__user-image_online'></div>
           </div>
-          <h2 className='heading'>Alex Fame</h2>
-          <p>Reputation: 4.6</p>
+          <h2 className='heading'>{currentUser.username}</h2>
+          <p>Reputation: {currentUser.reputation}</p>
         </div>
         <ul className='user-profile__list'>
           <li>
             <h3>Total meets</h3>
-            <p>42</p>
+            <p>{currentUser.totalMeets}</p>
           </li>
           <li>
             <h3>Created meets</h3>
-            <p>5</p>
+            <p>{currentUser.createdMeets}</p>
           </li>
           <li>
             <h3>Town</h3>
-            <p>Dmitrov</p>
+            <input 
+              value={town}
+              onChange={(e) => changeTown(e)}
+              disabled={!isEdit}
+              placeholder='Your town' 
+              className={isEdit ? 'user-profile__input user-profile__input_active' : 'user-profile__input'}
+              />
           </li>
           <li>
             <h3>Phone</h3>
-            <p>+81113123123123</p>
+            <input 
+              value={phone}
+              onChange={(e) => changePhone(e)}
+              disabled={!isEdit} 
+              type="tel"
+              placeholder='Your phone' 
+              className={isEdit ? 'user-profile__input user-profile__input_active' : 'user-profile__input'}
+              />
           </li>
         </ul>
       </div>
-      <SecondButton handle={() => setIsOpen(false)} text={'Cancel'}/>
+      <div className='user-profile__btns'>
+        <MainButton handle={() => handleEdit()} text={isEdit ? 'Confirm' : 'Edit profile'}/>
+        <SecondButton handle={() => setIsOpen(false)} text={'Cancel'}/>
+      </div>
     </AppModal>
   )
 }

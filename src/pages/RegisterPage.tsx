@@ -1,16 +1,19 @@
 import '../styles/pages/loginPage.scss'
 import {createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore"; 
 import { useState, FormEvent, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { auth } from '../firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUser, currentUser } from '../app/feautures/userSlice';
+import { addUser, addUserContent, currentUser } from '../app/feautures/userSlice';
+import { db } from '../firebase';
 import LoginBanner from "../components/LoginBanner"
 import RegisterForm from '../components/RegisterForm';
 
 const RegisterPage = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector(currentUser);
 
   const [visible, setVisible] = useState(false);
@@ -46,7 +49,30 @@ const RegisterPage = () => {
       try {
         const response = await createUserWithEmailAndPassword(auth, userInfo.email, userInfo.password);
         await updateProfile(response.user, { displayName: userInfo.name });
-        dispatch(addUser({username: userInfo.name, email: userInfo.email, uid: response.user.uid}))
+        dispatch(addUser({username: userInfo.name, email: userInfo.email, uid: response.user.uid}));
+        await setDoc(doc(db, "users", response.user.uid), {
+          uid: response.user.uid,
+          username: userInfo.name,
+          email: userInfo.email,
+          reputation: 0,
+          phone: '',
+          town: '',
+          interests: [],
+          totalMeets: 0,
+          createdMeets: 0,
+        });
+        dispatch((addUserContent({          
+          uid: response.user.uid,
+          username: userInfo.name,
+          email: userInfo.email,
+          reputation: 0,
+          phone: '',
+          town: '',
+          interests: [],
+          totalMeets: 0,
+          createdMeets: 0,
+        })))
+        navigate('/');
       } catch (e: any) {
         const errorMessage = e.message;
         setServerError(errorMessage);

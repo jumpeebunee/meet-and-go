@@ -11,3 +11,15 @@ export type IUser = {
   email: string,
   uid: string,
 }
+
+export type IUserFull = {
+  email: string,
+  interests: string[],
+  phone: string,
+  town: string,
+  uid: string,
+  username: string,
+  reputation: number,
+  totalMeets: number,
+  createdMeets: number,
+}

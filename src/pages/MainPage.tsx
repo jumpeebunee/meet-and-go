@@ -72,10 +72,11 @@ const MainPage = () => {
               </div>
             )}
             <GeolocationControl options={{
-              float: 'left'
+              float: 'left',
             }} />
           </Map>
           <div className='app__profile'>
+            <div>Account</div>
             <button onClick={() => setIsProfileOpen(true)} className='app__profile-avatar'></button>
           </div>
       </YMaps>
