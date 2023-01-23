@@ -1,5 +1,3 @@
-import '../styles/components/loadingScreen.scss';
-
 const LoadingScreen = () => {
   return (
     <div style={{background: '#75D7A1'}} className='app__content app__content-loading'>

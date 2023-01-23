@@ -1,5 +1,3 @@
-import '../styles/components/loginBanner.scss'
-
 const LoginBanner = () => {
   return (
     <div className="login-banner">

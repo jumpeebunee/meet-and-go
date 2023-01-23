@@ -32,3 +32,71 @@
   flex-direction: column;
   gap: 15px;
 }
+
+.create-point__participants {
+  margin-top: 25px;
+
+  p {
+    margin-top: 3px;
+  }
+}
+
+.create-point__point__participants-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+  
+  button {
+    width: 32px;
+    height: 32px;
+    color: #fff;
+    background: #282828;
+    border-radius: 4px;;
+  }
+}
+
+.create-pont__main {
+  max-height: 80%;
+  margin-bottom: 40px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+.create-point__money {
+  margin-top: 25px;
+}
+
+.create-point__money-input {
+  margin-top: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.create-point__range {
+  width: 100%;
+  max-width: 225px;
+}
+
+
+input[type="range"] {
+  -webkit-appearance: none;
+  max-width: 225px;
+  width: 100%;
+  height: 4px;
+  background-color: #F1F1F1;
+  border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background: #282828;
+  cursor: pointer;
+}

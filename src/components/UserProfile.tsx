@@ -1,4 +1,3 @@
-import '../styles/components/userProfile.scss';
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { currentUserContent } from '../app/feautures/userSlice';
@@ -24,12 +23,12 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
 
   const handleEdit = async() => {
     if (isEdit) {
+      setIsEdit(false);
       const userRef = doc(db, "users", currentUser.uid);
       await updateDoc(userRef, {
         phone,
         town,
       });
-      setIsEdit(false);
     } else {
       setIsEdit(true);
     }

@@ -1,3 +1,10 @@
+@use './components/createPoint';
+@use './components/aboutEvent';
+@use './components/loadingScreen';
+@use './components/loginBanner';
+@use './components/userProfile';
+@use './pages/loginPage.scss';
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700&display=swap');
 
 * {
@@ -40,6 +47,20 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+}
+
+.app-input {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 18px;
+  line-height: 22px;
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(217, 217, 217, 0.2);
+  border-radius: 10px;
+}
+
+.app-input::placeholder {
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .app__content {
@@ -99,4 +120,10 @@ body {
 
 .user-profile__input {
   text-align: right;
+}
+
+//* date *//
+
+.react-datepicker__header .react-datepicker__header--time {
+  background-color: red;
 }

@@ -1,4 +1,3 @@
-import '../styles/components/aboutEvent.scss';
 import { FC, useMemo, useState } from 'react'
 import { IEvent } from '../types/types'
 import AppModal from './UI/AppModal/AppModal'

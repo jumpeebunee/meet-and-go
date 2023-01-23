@@ -1,4 +1,3 @@
-import '../styles/pages/loginPage.scss'
 import {createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore"; 
 import { useState, FormEvent, useEffect } from 'react'
