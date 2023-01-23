@@ -1,20 +1,20 @@
+@mixin app-font($fw, $fz, $lh, $color: white) {
+  font-weight: $fw;
+  font-size: $fz;
+  line-height: $lh;
+}
+
 .login-banner {
   padding: 95px 30px 40px 30px;
   background: #75D7A1;
   border-radius: 25px;
 
   h2 {
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 44px;
-    color: #FFFFFF;
+    @include app-font(700, 36px, 44px);
   }
 
   p {
     margin-top: 10px;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 22px;
-    color: #FFFFFF;
+    @include app-font(500, 18px, 22px);
   }
 }

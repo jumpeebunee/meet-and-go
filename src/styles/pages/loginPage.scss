@@ -1,21 +1,35 @@
+
+@mixin app-font($fw, $fz, $lh, $color: $black-main) {
+  font-weight: $fw;
+  font-size: $fz;
+  line-height: $lh;
+}
+
+@mixin app-flex($jc: space-between, $ai: center, $ds: flex) {
+  display: $ds;
+  justify-content: $jc;
+  align-items: $ai;
+}
+
+$red-error: #D77575;
+$black-main: #1A1A1A;
+$grey-main: rgba(217, 217, 217, 0.2);
+
+
 .app__content_login {
-  display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  @include app-flex();
 }
 
 .login-page__form {
-  display: flex;
   flex-direction: column;
   gap: 20px;
   margin-top: 40px;
+  @include app-flex(start, start);
 }
 
 .login-page__toggle {
-  font-size: 16px;
-  line-height: 19px;
-  color: #1A1A1A;
+  @include app-font(400, 16px, 19px);
 
   span {
     color: #75D7A1;

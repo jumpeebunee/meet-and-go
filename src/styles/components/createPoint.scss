@@ -1,3 +1,18 @@
+@mixin app-font($fw, $fz, $lh) {
+  font-weight: $fw;
+  font-size: $fz;
+  line-height: $lh;
+}
+
+@mixin app-flex($jc: space-between, $ai: center, $ds: flex) {
+  display: $ds;
+  justify-content: $jc;
+  align-items: $ai;
+}
+
+$red-error: #D77575;
+$black-main: #1A1A1A;
+$grey-main: rgba(217, 217, 217, 0.2);
 
 .create-point__info {
   display: flex;
@@ -21,10 +36,9 @@
 }
 
 .create-point__interest-item {
-  font-size: 16px;
-  line-height: 19px;
   color: rgba(0, 0, 0, 0.7);
   background-color: transparent;
+  @include app-font(400, 16px, 19px);
 }
 
 .create-point__buttons {
@@ -42,10 +56,8 @@
 }
 
 .create-point__point__participants-input {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-top: 25px;
+  @include app-flex();
   
   button {
     width: 32px;
@@ -72,16 +84,13 @@
 
 .create-point__money-input {
   margin-top: 17px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include app-flex();
 }
 
 .create-point__range {
   width: 100%;
   max-width: 225px;
 }
-
 
 input[type="range"] {
   -webkit-appearance: none;

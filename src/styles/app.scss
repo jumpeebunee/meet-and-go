@@ -1,15 +1,30 @@
+@use './components/loadingScreen';
 @use './components/createPoint';
 @use './components/aboutEvent';
-@use './components/loadingScreen';
 @use './components/loginBanner';
 @use './components/userProfile';
 @use './pages/loginPage.scss';
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700&display=swap');
+
+@mixin app-font($fw, $fz, $lh) {
+  font-weight: $fw;
+  font-size: $fz;
+  line-height: $lh;
+}
+
+@mixin app-flex($jc: space-between, $ai: center, $ds: flex) {
+  display: $ds;
+  justify-content: $jc;
+  align-items: $ai;
+}
+
+$red-error: #D77575;
+$black-main: #1A1A1A;
+$grey-main: rgba(217, 217, 217, 0.2);
 
 * {
   font-family: Inter;
-  color: #1A1A1A;
+  color: $black-main;
 }
 
 body {
@@ -21,42 +36,33 @@ body {
   -webkit-filter: grayscale(100%);
 }
 
-
 .heading {
-  font-weight: 800;
-  font-size: 24px;
-  line-height: 29px;
   color: #1A1A1A;
+  @include app-font(800, 24px, 29px);
 }
 
 .second-heading {
-  font-weight: 800;
-  font-size: 18px;
-  line-height: 22px;
+  @include app-font(800, 18px, 22px);
 }
 
 .error {
   margin-top: 10px;
-  font-size: 14px;
-  line-height: 17px;
-  color: #D77575;
+  color: $red-error;
+  @include app-font(400, 14px, 17px);
 }
 
 .app {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
+  @include app-flex(center);
 }
 
 .app-input {
   width: 100%;
   padding: 14px 20px;
-  font-size: 18px;
-  line-height: 22px;
   color: rgba(0, 0, 0, 0.7);
-  background: rgba(217, 217, 217, 0.2);
+  background: $grey-main;
   border-radius: 10px;
+  @include app-font(400, 18px, 22px);
 }
 
 .app-input::placeholder {
@@ -80,9 +86,6 @@ body {
 }
 
 .app__profile {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
   padding: 0 6px 0px 40px;
   gap: 20px;
   height: 59px;
@@ -91,17 +94,16 @@ body {
   right: 30px;
   background: #FFFFFF;
   border-radius: 40px;
-  font-size: 16px;
-  line-height: 19px;
   box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.05);
+  @include app-font(400, 16px, 19px);
+  @include app-flex(flex-end);
 }
 
 .user-profile__input {
   max-width: 150px;
-  font-size: 16px;
-  line-height: 19px;
   background-color: transparent;
   border-bottom: 1px solid transparent;
+  @include app-font(400, 16px, 19px);
 }
 
 .user-profile__btns {
@@ -117,13 +119,6 @@ body {
   border-radius: 50%;
 }
 
-
 .user-profile__input {
   text-align: right;
-}
-
-//* date *//
-
-.react-datepicker__header .react-datepicker__header--time {
-  background-color: red;
 }

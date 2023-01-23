@@ -1,3 +1,13 @@
+@mixin app-font($fw, $fz, $lh) {
+  font-weight: $fw;
+  font-size: $fz;
+  line-height: $lh;
+}
+
+$red-error: #D77575;
+$black-main: #1A1A1A;
+$grey-main: rgba(217, 217, 217, 0.2);
+
 .about-event__interests {
   margin-top: 25px;
 }
@@ -17,9 +27,8 @@
   }
 
   li {
-    font-size: 16px;
-    line-height: 19px;
-    color: #1A1A1A;
+    color: $black-main;
+    @include app-font(400, 16px, 19px);
   }
 }
 
@@ -28,8 +37,7 @@
 
   p {
     margin-top: 3px;
-    font-size: 14px;
-    line-height: 17px;
+    @include app-font(400, 14px, 17px);
   }
 }
 
