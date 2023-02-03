@@ -1,7 +1,8 @@
-// import '../styles/components/createPoint.scss';
 import { FC, useState } from "react"
 import { IEvent } from '../types/types';
 import { nanoid } from '@reduxjs/toolkit';
+import { collection, addDoc } from "firebase/firestore"; 
+import { db } from "../firebase";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AppInput from "./UI/AppInput/AppInput"
@@ -11,21 +12,34 @@ import SecondButton from './UI/SecondButton/SecondButton';
 
 interface CreatePointProps {
   isOpen: boolean,
-  setIsOpen: Function,
-  setEvents: Function,
   eventCords: number[],
+  setIsOpen: (arg: boolean) => void,
 }
 
-const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, setEvents}) => {
+const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords}) => {
 
+  const [price, setPrice] = useState('0');
   const [participants, setParticipants] = useState(2);
   const [eventName, setEventName] = useState('');
   const [eventLocation, setEventLocation] = useState('');
-  const [startDate, setStartDate] = useState<Date>();
+  const [startDate, setStartDate] = useState<Date | string>();
 
-  const handleCreate = () => {
-    if (eventName.length > 2 && eventLocation.length > 2) {
-      setEvents((prev: IEvent[]) => [...prev,  {id: nanoid(), title: eventName, cords: eventCords}])
+  const handleCreate = async() => {
+    if (eventName.length > 2 && eventLocation.length > 2 && startDate) {
+      await addDoc(collection(db, "events"), {
+        id: nanoid(),
+        title: eventName,
+        cords: eventCords,
+        place: eventLocation, 
+        date: startDate,
+        contribution: price,
+        participants: participants,
+      })
+      setPrice('0');
+      setParticipants(2);
+      setEventName('');
+      setEventLocation('');
+      setStartDate('');
       setIsOpen(false);
     }
   }
@@ -51,7 +65,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, setEve
             className='app-input'
             showTimeSelect
             minDate={new Date()}
-            selected={startDate}
+            selected={startDate as Date}
             closeOnScroll={true}
             placeholderText="Event date"
             fixedHeight
@@ -71,8 +85,15 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, setEve
           <h2 className='second-heading'>Сontribution</h2>
           <p>Initial payment</p>
           <div className='create-point__money-input'>
-            <input className='create-point__range' onChange={(e) => console.log(e.target.value)} step="10" min="0" max="100" type="range"/>
-            <p>$100</p>
+            <input 
+              className='create-point__range'
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              step="10"
+              min="0" max="100"
+              type="range"
+            />
+            <p>${price}</p>
           </div>
         </div>
       </div>

@@ -26,7 +26,7 @@ interface RegisterFormProps {
 const RegisterForm:FC<RegisterFormProps> = ({handleSubmit, setUserInfo, userInfo, errors, visible, handleVisible}) => {
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="login-page__form">
-      <div>
+      <div className='login-page__input-wrapper'>
         <AppInput
           style={{padding: '20px'}}
           placeholder="Username"
@@ -34,7 +34,7 @@ const RegisterForm:FC<RegisterFormProps> = ({handleSubmit, setUserInfo, userInfo
         />
         {errors.name && <p className='error'>Enter valid name</p>}
       </div>
-      <div>
+      <div className='login-page__input-wrapper'>
         <AppInput
           style={{padding: '20px'}}
           placeholder="Email"
@@ -42,7 +42,7 @@ const RegisterForm:FC<RegisterFormProps> = ({handleSubmit, setUserInfo, userInfo
         />
         {errors.email && <p className='error'>Enter valid email</p>}
       </div>
-      <div>
+      <div className='login-page__input-wrapper'>
         <div className='login-page__password'>
           <AppInput
             autoComplete='true'

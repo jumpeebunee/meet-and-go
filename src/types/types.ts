@@ -3,7 +3,9 @@ export type IEvent = {
   title: string,
   cords: number[],
   place: string,
-  interest: string[],
+  date: string,
+  participants: number,
+  contribution: number,
 }
 
 export type IUser = {

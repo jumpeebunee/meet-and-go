@@ -6,31 +6,7 @@
 
 $red-error: #D77575;
 $black-main: #1A1A1A;
-$grey-main: rgba(217, 217, 217, 0.2);
-
-.about-event__interests {
-  margin-top: 25px;
-}
-
-.about-event__interests-list {
-  display: flex;
-  padding: 11px 20px;
-  margin-top: 15px;
-  background: #F1F1F1;
-  border-radius: 10px;
-  overflow-x: scroll;
-  gap: 20px;
-
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-
-  li {
-    color: $black-main;
-    @include app-font(400, 16px, 19px);
-  }
-}
+$grey-main: rgba(217, 217, 217, 0.2); 
 
 .about-event__location {
   margin-top: 30px;
@@ -66,4 +42,17 @@ $grey-main: rgba(217, 217, 217, 0.2);
   height: 101px;
   background: rgba(217, 217, 217, 0.2);
   border-radius: 20px;
+}
+
+.about-event__date {
+  margin-bottom: 10px;
+  color: rgba(0, 0, 0, 0.6);
+  @include app-font(400, 14px, 17px);
+}
+
+.about-event__base-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
 }

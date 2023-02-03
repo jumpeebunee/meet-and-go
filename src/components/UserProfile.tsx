@@ -9,7 +9,7 @@ import MainButton from './UI/MainButton/MainButton';
 
 interface UserProfileProps {
   isOpen: boolean,
-  setIsOpen: Function,
+  setIsOpen: (arg: boolean) => void,
 }
  
 const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {

@@ -3,7 +3,7 @@ import cl from './mainButton.module.css';
 
 interface MainButtonProps {
   text: string,
-  handle?: Function,
+  handle?: () => void,
 }
 
 const MainButton:FC<MainButtonProps> = ({text, handle}) => {

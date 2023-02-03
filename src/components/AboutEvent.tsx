@@ -2,13 +2,14 @@ import { FC, useMemo, useState } from 'react'
 import { IEvent } from '../types/types'
 import AppModal from './UI/AppModal/AppModal'
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
+import format from 'date-fns/format';
 import MainButton from './UI/MainButton/MainButton';
 import SecondButton from './UI/SecondButton/SecondButton';
 
 interface AboutEventProps {
   isOpen: boolean,
-  setIsOpen: Function,
   currentEvent: IEvent,
+  setIsOpen: (arg: boolean) => void,
 }
 
 const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, currentEvent}) => {
@@ -23,18 +24,11 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, currentEvent}) => {
   return (
     <AppModal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div>
+        <div className='about-event__date'>{format(new Date('Tue Jan 24 2023 00:00:00 GMT+0300 (Москва, стандартное время)'),'PPPp')}</div>
         {currentEvent.title
         ? <h2 className='heading'>{currentEvent.title}</h2>
         : <div className='about-event__heading_loading'></div>
         }
-        <div className='about-event__interests'>
-          <h3 className='second-heading'>Interest</h3>
-          <ul className='about-event__interests-list'>
-            {currentEvent.interest.map(interes => 
-              <li key={interes}>{interes}</li>
-            )}
-          </ul>
-        </div>
         <div className='about-event__location'>
           <h3 className='second-heading'>Location</h3>
           <p>{currentEvent.place}</p>
@@ -59,6 +53,14 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, currentEvent}) => {
             </div>
           }
           </YMaps>
+          <div className='about-event__base-info'>
+            <h2 className='second-heading'>Participants</h2>
+            <p>0/{currentEvent.participants}</p>
+          </div>
+          <div  className='about-event__base-info'>
+            <h2 className='second-heading'>Сontribution</h2>
+            <p>${currentEvent.contribution}</p>
+          </div>
       </div>
       <div className='create-point__buttons'>
         <MainButton handle={() => setIsOpen(false)} text='Continue'/>

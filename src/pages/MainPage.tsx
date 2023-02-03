@@ -4,12 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { YMaps, Map, Placemark, GeolocationControl } from '@pbe/react-yandex-maps';
 import { IEvent } from '../types/types';
 import { currentUser } from '../app/feautures/userSlice';
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from '../firebase';
 import CreatePoint from '../components/CreatePoint';
 import AboutEvent from '../components/AboutEvent';
 import UserProfile from '../components/UserProfile';
 
 const MainPage = () => {
-  const defaultState = {
+
+  const MAP_CENTER = {
     center: [55.751574, 37.573856],
     zoom: 10,
   };
@@ -20,12 +23,27 @@ const MainPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCurrentOpen, setIsCurrentOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', interest: []});
+  const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', date: '', contribution: 0, participants: 0});
   const [eventCords, setEventCords] = useState([]);
   const [events, setEvents] = useState<IEvent[]>([
-    {id: '1', title: 'Погулять c собакой', cords: [55.684758, 37.738521], place: 'Тульская', interest: ['Животные', 'Собаки', 'прогулка', 'Отдых']},
-    {id: '2', title: 'Убить Фейма', cords: [56.34929007185356, 37.51838062216117], place: 'Дом Михаловых', interest: ['Убийство', 'Скотина', 'Предатель']},
+    {
+      id: '1',
+      title:'Погулять c собакой',
+      cords: [55.684758, 37.738521],
+      place: 'Тульская',
+      date: 'Tue Jan 24 2023 00:00:00 GMT+0300 (Москва, стандартное время)',
+      contribution: 10, 
+      participants: 5,
+    },
   ]);
+
+  useEffect(() => {
+    onSnapshot(collection(db, "events"), doc => {
+      doc.forEach((d: any) => {
+        console.log(d.data())
+      })
+    })
+  }, [])
 
   useEffect(() => {
     if (!user.uid) {
@@ -33,7 +51,11 @@ const MainPage = () => {
     } 
   },[])
 
-  function createEvent(e:any) {
+  useMemo(() => {
+    if (!isCurrentOpen && currentEvent.cords.length === 2) setCurrentEvent({id: '', title:'', cords: [], place: '', date: '',  contribution: 0, participants: 0});
+  }, [isCurrentOpen])
+
+  const createEvent = (e:any) => {
     setIsOpen(true);
     setEventCords(e.get('coords'));
   }
@@ -46,10 +68,6 @@ const MainPage = () => {
     }
   }
 
-  useMemo(() => {
-    if (!isCurrentOpen && currentEvent.cords.length === 2) setCurrentEvent({id: '', title:'', cords: [], place: '', interest: []});
-  }, [isCurrentOpen])
-
   return (
     <div data-testid="map" className='app__content'>
       <YMaps
@@ -57,7 +75,7 @@ const MainPage = () => {
             apikey: "bb874fcf-3722-4db8-8062-76756ffbcd45",
           }}
         >
-          <Map onClick={(e:any) => createEvent(e)} className='app__map' defaultState={defaultState}>
+          <Map onClick={(e:any) => createEvent(e)} className='app__map' defaultState={MAP_CENTER}>
             {events.map(event =>
             <div className='app__map-placemark' key={event.id}>
                 <Placemark
@@ -83,7 +101,6 @@ const MainPage = () => {
       <CreatePoint 
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        setEvents={setEvents}
         eventCords={eventCords}
       />
       <AboutEvent

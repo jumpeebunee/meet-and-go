@@ -3,7 +3,7 @@ import cl from './secondButton.module.css';
 
 interface MainButtonProps {
   text: string,
-  handle: Function,
+  handle: (arg?: boolean) => void,
 }
 
 const SecondButton:FC<MainButtonProps> = ({text, handle}) => {

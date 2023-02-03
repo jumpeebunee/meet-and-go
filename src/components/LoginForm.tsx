@@ -25,7 +25,7 @@ const LoginForm:FC<LoginFormProps> = ({userInfo, handleLogin, setUserInfo, visib
         style={{padding: '20px'}}
         placeholder="Email"
       />
-      <div className='login-page__password'>
+      <div className='login-page__password login-page__input-wrapper'>
         <AppInput
           value={userInfo.password}
           onChange={(e) => setUserInfo({...userInfo, password: e.target.value})}
