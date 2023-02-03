@@ -6,6 +6,10 @@ import { db } from '../firebase';
 import AppModal from './UI/AppModal/AppModal'
 import SecondButton from './UI/SecondButton/SecondButton';
 import MainButton from './UI/MainButton/MainButton';
+import UserProfileMain from './UserProfileMain';
+import UserProfileBaseItem from './UserProfileBaseItem';
+import UserProfileEditableItem from './UserProfileEditableItem';
+import AppList from './AppList';
 
 interface UserProfileProps {
   isOpen: boolean,
@@ -18,7 +22,6 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
 
   const [phone, setPhone] = useState(currentUser.phone);
   const [town, setTown] = useState(currentUser.town);
-
   const [isEdit, setIsEdit] = useState(false);
 
   const handleEdit = async() => {
@@ -31,6 +34,7 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
       });
     } else {
       setIsEdit(true);
+
     }
   }
 
@@ -44,7 +48,7 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
 
   const changeTown = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target.value;
-    if (target.length > 0 && target.length < 12) {
+    if (target.length >= 0 && target.length < 12) {
       setTown(target);
     }
     return;
@@ -59,44 +63,25 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
   return (
     <AppModal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div>
-        <div className='user-profile__user'>
-          <div className='user-profile__user-image'>
-            <div className='user-profile__user-image_online'></div>
-          </div>
-          <h2 className='heading'>{currentUser.username}</h2>
-          <p>Reputation: {currentUser.reputation}</p>
-        </div>
-        <ul className='user-profile__list'>
-          <li>
-            <h3>Total meets</h3>
-            <p>{currentUser.totalMeets}</p>
-          </li>
-          <li>
-            <h3>Created meets</h3>
-            <p>{currentUser.createdMeets}</p>
-          </li>
-          <li>
-            <h3>Town</h3>
-            <input 
-              value={town}
-              onChange={(e) => changeTown(e)}
-              disabled={!isEdit}
-              placeholder='Your town' 
-              className={isEdit ? 'user-profile__input user-profile__input_active' : 'user-profile__input'}
-              />
-          </li>
-          <li>
-            <h3>Phone</h3>
-            <input 
-              value={phone}
-              onChange={(e) => changePhone(e)}
-              disabled={!isEdit} 
-              type="tel"
-              placeholder='Your phone' 
-              className={isEdit ? 'user-profile__input user-profile__input_active' : 'user-profile__input'}
-              />
-          </li>
-        </ul>
+        <UserProfileMain username={currentUser.username} reputation={currentUser.reputation}/>
+        <AppList>
+          <UserProfileBaseItem title="Total meets" body={currentUser.totalMeets}/>
+            <UserProfileBaseItem title="Created meets" body={currentUser.createdMeets}/>
+            <UserProfileEditableItem 
+              title="Town"
+              placeholder="Your phone" 
+              isEdit={isEdit} 
+              current={town}
+              changeCurrent={changeTown}
+            />
+            <UserProfileEditableItem 
+              title="Phone"
+              placeholder="Your phone" 
+              isEdit={isEdit} 
+              current={phone}
+              changeCurrent={changePhone}
+          />
+        </AppList>
       </div>
       <div className='user-profile__btns'>
         <MainButton handle={() => handleEdit()} text={isEdit ? 'Confirm' : 'Edit profile'}/>
