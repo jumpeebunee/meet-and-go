@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { YMaps, Map, Placemark, GeolocationControl } from '@pbe/react-yandex-maps';
 import { IEvent } from '../types/types';
 import { currentUser } from '../app/feautures/userSlice';
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, QueryDocumentSnapshot } from "firebase/firestore";
 import { db } from '../firebase';
 import CreatePoint from '../components/CreatePoint';
 import AboutEvent from '../components/AboutEvent';
@@ -25,23 +25,15 @@ const MainPage = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', date: '', contribution: 0, participants: 0});
   const [eventCords, setEventCords] = useState([]);
-  const [events, setEvents] = useState<IEvent[]>([
-    {
-      id: '1',
-      title:'Погулять c собакой',
-      cords: [55.684758, 37.738521],
-      place: 'Тульская',
-      date: 'Tue Jan 24 2023 00:00:00 GMT+0300 (Москва, стандартное время)',
-      contribution: 10, 
-      participants: 5,
-    },
-  ]);
+  const [events, setEvents] = useState<IEvent[]>([]);
 
   useEffect(() => {
     onSnapshot(collection(db, "events"), doc => {
-      doc.forEach((d: any) => {
-        console.log(d.data())
+      const data: IEvent[] = []
+      doc.forEach((d) => {
+        data.push(d.data() as IEvent);
       })
+      setEvents(data);
     })
   }, [])
 

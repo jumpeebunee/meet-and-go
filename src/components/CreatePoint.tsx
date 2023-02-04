@@ -41,6 +41,8 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords}) => {
       setEventLocation('');
       setStartDate('');
       setIsOpen(false);
+    } else {
+      console.log('Иди нахуй')
     }
   }
 
