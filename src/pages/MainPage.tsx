@@ -1,11 +1,11 @@
 import { useState, useMemo, useEffect } from 'react'
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { YMaps, Map, Placemark, GeolocationControl } from '@pbe/react-yandex-maps';
 import { IEvent } from '../types/types';
-import { currentUser } from '../app/feautures/userSlice';
-import { collection, onSnapshot, QueryDocumentSnapshot } from "firebase/firestore";
+import { currentUser, currentUserContent } from '../app/feautures/userSlice';
+import { collection, onSnapshot } from "firebase/firestore";
 import { db } from '../firebase';
+import { useAppSelector } from '../app/hooks';
 import CreatePoint from '../components/CreatePoint';
 import AboutEvent from '../components/AboutEvent';
 import UserProfile from '../components/UserProfile';
@@ -17,7 +17,8 @@ const MainPage = () => {
     zoom: 10,
   };
 
-  const user = useSelector(currentUser);
+  const user = useAppSelector(currentUser);
+  const userContent = useAppSelector(currentUserContent);
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -87,7 +88,9 @@ const MainPage = () => {
           </Map>
           <div className='app__profile'>
             <div>Account</div>
-            <button onClick={() => setIsProfileOpen(true)} className='app__profile-avatar'></button>
+            <button onClick={() => setIsProfileOpen(true)} className='app__profile-avatar'>
+              <img src={userContent.image}/>
+            </button>
           </div>
       </YMaps>
       <CreatePoint 
