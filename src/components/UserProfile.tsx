@@ -40,7 +40,7 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
 
   const changePhone = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target.value;
-    if ((+target || target.length === 0) && +target.length <= 12) {
+    if (+target && +target.length <= 12) {
       setPhone(target);
     }
     return;

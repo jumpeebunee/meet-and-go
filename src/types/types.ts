@@ -24,4 +24,5 @@ export type IUserFull = {
   reputation: number,
   totalMeets: number,
   createdMeets: number,
+  image: string,
 }
