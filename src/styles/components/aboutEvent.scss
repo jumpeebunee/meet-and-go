@@ -56,3 +56,30 @@ $grey-main: rgba(217, 217, 217, 0.2);
   justify-content: space-between;
   margin-top: 25px;
 }
+
+.about-event__base-content {
+  display: flex;
+  align-items: center;
+}
+
+.about-event__avatars {
+  position: relative;
+}
+
+
+@for $i from 1 through 10 {
+  .about-event__avatar:nth-child( #{$i}) {
+    right: 10px * $i;
+  }
+}
+
+.about-event__avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  position: absolute;
+  outline: solid 1px #1A1A1A;
+  right: 0;
+  bottom: -15px;
+  object-fit: cover;
+}

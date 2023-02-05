@@ -1,8 +1,9 @@
 import { FC, useState } from "react"
-import { IEvent } from '../types/types';
 import { nanoid } from '@reduxjs/toolkit';
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from "../firebase";
+import { useAppSelector } from "../app/hooks";
+import { currentUserContent } from "../app/feautures/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AppInput from "./UI/AppInput/AppInput"
@@ -17,6 +18,8 @@ interface CreatePointProps {
 }
 
 const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords}) => {
+
+  const user = useAppSelector(currentUserContent);
 
   const [price, setPrice] = useState('0');
   const [participants, setParticipants] = useState(2);
@@ -34,6 +37,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords}) => {
         date: startDate,
         contribution: price,
         participants: participants,
+        activeUsers: [{...user}],
       })
       setPrice('0');
       setParticipants(2);

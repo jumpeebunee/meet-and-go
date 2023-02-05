@@ -6,6 +6,7 @@ export type IEvent = {
   date: string,
   participants: number,
   contribution: number,
+  activeUsers: IUserFull[],
 }
 
 export type IUser = {

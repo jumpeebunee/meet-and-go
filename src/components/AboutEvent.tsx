@@ -55,9 +55,16 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, currentEvent}) => {
           </YMaps>
           <div className='about-event__base-info'>
             <h2 className='second-heading'>Participants</h2>
-            <p>0/{currentEvent.participants}</p>
+            <div className='about-event__base-content'>
+              <div className='about-event__avatars'>
+                {currentEvent.activeUsers.map(user =>
+                  <img key={user.uid} alt={user.username} src={user.image} className='about-event__avatar'/>
+                )}
+              </div>
+              <p>{currentEvent.activeUsers.length}/{currentEvent.participants}</p>
+            </div>
           </div>
-          <div  className='about-event__base-info'>
+          <div className='about-event__base-info'>
             <h2 className='second-heading'>Сontribution</h2>
             <p>${currentEvent.contribution}</p>
           </div>

@@ -24,7 +24,7 @@ const MainPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCurrentOpen, setIsCurrentOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', date: '', contribution: 0, participants: 0});
+  const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', date: '', contribution: 0, participants: 0, activeUsers: []});
   const [eventCords, setEventCords] = useState([]);
   const [events, setEvents] = useState<IEvent[]>([]);
 
@@ -45,7 +45,7 @@ const MainPage = () => {
   },[])
 
   useMemo(() => {
-    if (!isCurrentOpen && currentEvent.cords.length === 2) setCurrentEvent({id: '', title:'', cords: [], place: '', date: '',  contribution: 0, participants: 0});
+    if (!isCurrentOpen && currentEvent.cords.length === 2) setCurrentEvent({id: '', title:'', cords: [], place: '', date: '',  contribution: 0, participants: 0, activeUsers: []});
   }, [isCurrentOpen])
 
   const createEvent = (e:any) => {
@@ -89,7 +89,7 @@ const MainPage = () => {
           <div className='app__profile'>
             <div>Account</div>
             <button onClick={() => setIsProfileOpen(true)} className='app__profile-avatar'>
-              <img src={userContent.image}/>
+              <img alt="Avatar" src={userContent.image}/>
             </button>
           </div>
           <button className='app__events'><span></span></button>

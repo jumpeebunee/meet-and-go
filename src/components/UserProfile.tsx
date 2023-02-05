@@ -67,6 +67,7 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
   }
 
   useEffect(() => {
+    console.log('q')
     if (isEdit && !isOpen) {
       setIsEdit(false);
     }
