@@ -70,8 +70,8 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, currentEvent}) => {
           </div>
       </div>
       <div className='create-point__buttons'>
-        <MainButton handle={() => setIsOpen(false)} text='Continue'/>
-        <SecondButton handle={() => setIsOpen(false)} text='Cancel'/>
+        <MainButton handle={() => setIsOpen(false)} text='Description'/>
+        <SecondButton handle={() => setIsOpen(false)} text='Close'/>
       </div>
     </AppModal>
   )
