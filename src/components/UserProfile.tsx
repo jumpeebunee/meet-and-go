@@ -2,6 +2,7 @@ import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { currentUserContent } from '../app/feautures/userSlice';
 import { doc, updateDoc } from "firebase/firestore";
+import { validatePhone } from '../helpers/validatePhone';
 import { db } from '../firebase';
 import AppModal from './UI/AppModal/AppModal'
 import SecondButton from './UI/SecondButton/SecondButton';
@@ -23,26 +24,29 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
   const [phone, setPhone] = useState(currentUser.phone);
   const [town, setTown] = useState(currentUser.town);
   const [isEdit, setIsEdit] = useState(false);
+  const [isError, setIsError] = useState('');
 
   const handleEdit = async() => {
     if (isEdit) {
-      setIsEdit(false);
-      const userRef = doc(db, "users", currentUser.uid);
-      await updateDoc(userRef, {
-        phone,
-        town,
-      });
+      if (validatePhone(phone)) {
+        setIsEdit(false);
+        const userRef = doc(db, "users", currentUser.uid);
+        await updateDoc(userRef, {
+          phone,
+          town,
+        });
+      } else {
+        setIsError('Wrong number!');
+      }
     } else {
       setIsEdit(true);
-
+      setIsError('');
     }
   }
 
   const changePhone = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target.value;
-    if (+target && +target.length <= 12) {
-      setPhone(target);
-    }
+    setPhone(target); 
     return;
   }
 
@@ -52,6 +56,14 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
       setTown(target);
     }
     return;
+  }
+
+  const handleClose = () => {
+    if (isError) {
+      setPhone(currentUser.phone);
+      setIsError('');
+    }
+    setIsOpen(false);
   }
 
   useEffect(() => {
@@ -66,26 +78,27 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
         <UserProfileMain username={currentUser.username} reputation={currentUser.reputation}/>
         <AppList>
           <UserProfileBaseItem title="Total meets" body={currentUser.totalMeets}/>
-            <UserProfileBaseItem title="Created meets" body={currentUser.createdMeets}/>
-            <UserProfileEditableItem 
-              title="Town"
-              placeholder="Your phone" 
-              isEdit={isEdit} 
-              current={town}
-              changeCurrent={changeTown}
-            />
-            <UserProfileEditableItem 
-              title="Phone"
-              placeholder="Your phone" 
-              isEdit={isEdit} 
-              current={phone}
-              changeCurrent={changePhone}
+          <UserProfileBaseItem title="Created meets" body={currentUser.createdMeets}/>
+          <UserProfileEditableItem 
+            title="Town"
+            placeholder="Your phone" 
+            isEdit={isEdit} 
+            current={town}
+            changeCurrent={changeTown}
           />
+          <UserProfileEditableItem 
+            title="Phone"
+            placeholder="Your phone" 
+            isEdit={isEdit} 
+            current={phone}
+            changeCurrent={changePhone}
+          />
+          {isError && <div className='error'>{isError}</div>}
         </AppList>
       </div>
       <div className='user-profile__btns'>
         <MainButton handle={() => handleEdit()} text={isEdit ? 'Confirm' : 'Edit profile'}/>
-        <SecondButton handle={() => setIsOpen(false)} text={'Cancel'}/>
+        <SecondButton handle={handleClose} text={'Cancel'}/>
       </div>
     </AppModal>
   )
