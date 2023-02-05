@@ -133,3 +133,17 @@ body {
 .user-profile__input {
   text-align: right;
 }
+
+.app__events {
+  width: 60px;
+  height: 60px;
+  background-color: #75D7A1;
+  position: absolute;
+  top: 40px;
+  left: 30px;
+  border-radius: 10px;
+
+  span {
+    
+  }
+}

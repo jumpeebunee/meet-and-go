@@ -76,7 +76,7 @@ const MainPage = () => {
                   options={{
                     iconLayout: 'default#image',
                     iconImageHref: '../point.svg',
-                    iconImageSize: [62, 85],
+                    iconImageSize: [42, 65],
                   }}
                   geometry={event.cords} 
                 />
@@ -92,6 +92,7 @@ const MainPage = () => {
               <img src={userContent.image}/>
             </button>
           </div>
+          <button className='app__events'><span></span></button>
       </YMaps>
       <CreatePoint 
         isOpen={isOpen}
