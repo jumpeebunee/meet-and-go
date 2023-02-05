@@ -47,6 +47,7 @@ $grey-main: rgba(217, 217, 217, 0.2);
   img {
     width: 100px;
     height: 100px;
+    object-fit: cover;
     position: absolute;
     top: 0;
     right: 0;
