@@ -37,6 +37,7 @@ body {
 }
 
 .heading {
+  text-align: center;
   color: #1A1A1A;
   @include app-font(800, 24px, 29px);
 }

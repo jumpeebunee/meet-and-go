@@ -33,7 +33,7 @@ const RegisterPage = () => {
   }
 
   const validate = () => {
-    const name = userInfo.name.trim().length >= 3 && userInfo.name.trim().length <= 12;
+    const name = userInfo.name.trim().length >= 3 && userInfo.name.trim().length <= 20;
     const email = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]{2,3}$/.test((userInfo.email.trim()));
     const password = userInfo.password.trim().length >= 6;
 
