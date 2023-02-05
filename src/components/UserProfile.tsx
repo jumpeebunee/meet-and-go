@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { currentUserContent } from '../app/feautures/userSlice';
 import { doc, updateDoc } from "firebase/firestore";
 import { validatePhone } from '../helpers/validatePhone';
-import { db } from '../firebase';
+import { db, auth } from '../firebase';
 import AppModal from './UI/AppModal/AppModal'
 import SecondButton from './UI/SecondButton/SecondButton';
 import MainButton from './UI/MainButton/MainButton';
@@ -67,7 +67,6 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
   }
 
   useEffect(() => {
-    console.log('q')
     if (isEdit && !isOpen) {
       setIsEdit(false);
     }
@@ -75,7 +74,8 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
 
   return (
     <AppModal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div>
+      <div className='user-profile__wrapper'>
+        <button onClick={() => auth.signOut()} className='user-profile__logout'></button>
         <UserProfileMain username={currentUser.username} reputation={currentUser.reputation}/>
         <AppList>
           <UserProfileBaseItem title="Total meets" body={currentUser.totalMeets}/>
@@ -99,7 +99,7 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
       </div>
       <div className='user-profile__btns'>
         <MainButton handle={() => handleEdit()} text={isEdit ? 'Confirm' : 'Edit profile'}/>
-        <SecondButton handle={handleClose} text={'Cancel'}/>
+        <SecondButton handle={handleClose} text={'Close'}/>
       </div>
     </AppModal>
   )

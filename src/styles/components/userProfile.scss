@@ -34,14 +34,13 @@ $grey-main: rgba(217, 217, 217, 0.2);
   height: 100px;
   border-radius: 50%;
   position: relative;
-  cursor: pointer;
-  border-radius: 1px solid $black-main;
 
   input {
     width: 100%;
     height: 100%;
     position: absolute;
     opacity: 0;
+    cursor: pointer;
   }
 
   img {
@@ -92,4 +91,17 @@ $grey-main: rgba(217, 217, 217, 0.2);
     justify-content: space-between;
     @include app-font(400, 16px, 19px)
   }
+}
+
+.user-profile__wrapper {
+  position: relative;
+}
+
+.user-profile__logout {
+  width: 22px;
+  height: 28px;
+  background: url(../../assets/logout.svg) no-repeat transparent;
+  background-size: contain;
+  position: absolute;
+  right: 0;
 }
