@@ -78,8 +78,8 @@ const MainPage = () => {
                   onClick={() => openEvent(event.id)}
                   options={{
                     iconLayout: 'default#image',
-                    iconImageHref: '../point.svg',
-                    iconImageSize: [42, 65],
+                    iconImageHref: '../point.png',
+                    iconImageSize: [52, 62],
                   }}
                   geometry={event.cords} 
                 />
@@ -89,12 +89,12 @@ const MainPage = () => {
               float: 'left',
             }} />
           </Map>
-          <div className='app__profile'>
+          <button onClick={() => setIsProfileOpen(true)} className='app__profile'>
             <div>Account</div>
-            <button onClick={() => setIsProfileOpen(true)} className='app__profile-avatar'>
+            <div className='app__profile-avatar'>
               <img alt="Avatar" src={userContent.image}/>
-            </button>
-          </div>
+            </div>
+          </button>
           <button className='app__events'><span></span></button>
       </YMaps>
       <CreatePoint 
