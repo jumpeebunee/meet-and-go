@@ -1,0 +1,33 @@
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  h2 {
+    margin-bottom: 5px;
+  }
+}
+
+.user-list__item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  h2 {
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  span {
+    font-size: 12px;
+    line-height: 15px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}

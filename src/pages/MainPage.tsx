@@ -9,6 +9,7 @@ import { useAppSelector } from '../app/hooks';
 import CreatePoint from '../components/CreatePoint';
 import AboutEvent from '../components/AboutEvent';
 import UserProfile from '../components/UserProfile';
+import AppModalToggle from '../components/UI/AppModalToggle/AppModalToggle';
 
 const MainPage = () => {
 
@@ -24,9 +25,11 @@ const MainPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCurrentOpen, setIsCurrentOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMeet, setIsMeet] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', date: '', contribution: 0, participants: 0, activeUsers: []});
   const [eventCords, setEventCords] = useState([]);
   const [events, setEvents] = useState<IEvent[]>([]);
+  const [activeEventUsers, setActiveEventUsers] = useState(false);
 
   useEffect(() => {
     onSnapshot(collection(db, "events"), doc => {
@@ -102,11 +105,19 @@ const MainPage = () => {
       <AboutEvent
         isOpen={isCurrentOpen}
         setIsOpen={setIsCurrentOpen}
+        setIsMeet={setIsMeet}
         currentEvent={currentEvent}
+        activeEventUsers={activeEventUsers}
+        setActiveEventUsers={setActiveEventUsers}
       />
       <UserProfile
         isOpen={isProfileOpen}
         setIsOpen={setIsProfileOpen}
+      />
+      <AppModalToggle
+        isOpen={isMeet}
+        setIsOpen={setIsMeet}
+        text={'Go to event?'}
       />
     </div>
   )

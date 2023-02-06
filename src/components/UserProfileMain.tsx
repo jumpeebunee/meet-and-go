@@ -47,7 +47,7 @@ const UserProfileMain:FC<UserProfileMainProps> = ({username, reputation}) => {
         <div className='user-profile__user-image_online'></div>
         <input onChange={(e) => handleFileChange(e)} type="file"/>
       </div>
-      <h2 className='heading'>{username}</h2>
+      <h2 className='user-profile__heading heading'>{username}</h2>
       <p>Reputation: {reputation}</p>
     </div>
   )
