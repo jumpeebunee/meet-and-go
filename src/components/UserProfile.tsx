@@ -10,7 +10,7 @@ import MainButton from './UI/MainButton/MainButton';
 import UserProfileMain from './UserProfileMain';
 import UserProfileBaseItem from './UserProfileBaseItem';
 import UserProfileEditableItem from './UserProfileEditableItem';
-import AppList from './AppList';
+import AppList from './AppComponents/AppList';
 
 interface UserProfileProps {
   isOpen: boolean,

@@ -12,11 +12,13 @@ import { db } from '../firebase';
 interface UserProfileMainProps {
   username: string,
   reputation: number,
+  image?: string,
 }
 
-const UserProfileMain:FC<UserProfileMainProps> = ({username, reputation}) => {
+const UserProfileMain:FC<UserProfileMainProps> = ({username, reputation, image}) => {
 
   const currentUser = useAppSelector(currentUserContent);
+  const userImage = image ? image : currentUser.image;
   const dispatch = useAppDispatch();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,11 +43,11 @@ const UserProfileMain:FC<UserProfileMainProps> = ({username, reputation}) => {
 
   return (
     <div className='user-profile__user'>
-      <div className='user-profile__user-image'>
-        <img src={currentUser.image}/>
+      <div className={image ? 'user-profile__user-image' : 'user-profile__user-image user-profile__user-image_change'}>
+        <img alt={username} src={userImage}/>
         <div className='user-profile__user-change'></div>
         <div className='user-profile__user-image_online'></div>
-        <input onChange={(e) => handleFileChange(e)} type="file"/>
+        {!image && <input onChange={(e) => handleFileChange(e)} type="file"/>}
       </div>
       <h2 className='user-profile__heading heading'>{username}</h2>
       <p>Reputation: {reputation}</p>

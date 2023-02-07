@@ -1,12 +1,13 @@
 import { FC, useMemo, useState } from 'react'
-import { IEvent } from '../types/types'
+import { IEvent, IUserFull } from '../types/types'
 import AppModal from './UI/AppModal/AppModal'
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
 import format from 'date-fns/format';
 import MainButton from './UI/MainButton/MainButton';
 import SecondButton from './UI/SecondButton/SecondButton';
 import UserAvatars from './UserAvatars';
-import UsersList from './UsersList';
+import UsersList from './AppComponents/UsersList';
+import UserAbout from './AppComponents/UserAbout';
 
 interface AboutEventProps {
   isOpen: boolean,
@@ -20,6 +21,8 @@ interface AboutEventProps {
 const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentEvent, activeEventUsers, setActiveEventUsers}) => {
 
   const [centerPosition, setCenterPosition] = useState([55.751574, 37.573856]);
+  const [choosedUser, setChoosedUser] = useState<IUserFull | null>(null);
+  const [isOpenUserAccount, setIsUserAccount] = useState(false);
 
   useMemo(() => {
     if (currentEvent.cords.length > 0) setCenterPosition(currentEvent.cords);
@@ -30,10 +33,27 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentEv
     setIsMeet(true);
   }
 
-  if (activeEventUsers) {
+  const handleOpenUser = (user: IUserFull) => {
+    setChoosedUser(user);
+    setIsUserAccount(true);
+  }
+
+  const handleCloseUser = () => {
+    setChoosedUser(null);
+    setIsUserAccount(false);
+  }
+
+  if (isOpenUserAccount) {
+    return (
+      <AppModal isOpen={isOpenUserAccount} setIsOpen={setIsUserAccount}> 
+        <UserAbout user={choosedUser}/>
+        <SecondButton handle={handleCloseUser} text="Close"></SecondButton>
+      </AppModal>
+    )
+  } else if (activeEventUsers) {
     return (
       <AppModal isOpen={activeEventUsers} setIsOpen={setActiveEventUsers}>
-        <UsersList users={currentEvent.activeUsers}/>
+        <UsersList handleChoose={handleOpenUser} users={currentEvent.activeUsers}/>
         <SecondButton handle={() => setActiveEventUsers(false)} text='Close'/>
       </AppModal>
     )
