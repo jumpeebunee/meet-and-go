@@ -5,6 +5,7 @@ import SecondButton from './UI/SecondButton/SecondButton';
 import UsersList from './AppComponents/UsersList';
 import UserAbout from './AppComponents/UserAbout';
 import AboutEventModal from './AppModals/AboutEventModal';
+import ActiveUsersModal from './AppModals/ActiveUsersModal';
 
 interface AboutEventProps {
   isOpen: boolean,
@@ -49,10 +50,13 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentEv
     )
   } else if (activeEventUsers) {
     return (
-      <AppModal isOpen={activeEventUsers} setIsOpen={setActiveEventUsers}>
-        <UsersList handleChoose={handleOpenUser} users={currentEvent.activeUsers}/>
-        <SecondButton handle={() => setActiveEventUsers(false)} text='Close'/>
-      </AppModal>
+      <ActiveUsersModal
+        isOpen={activeEventUsers}
+        users={currentEvent.activeUsers}
+        setIsOpen={setActiveEventUsers}
+        chooseUser={handleOpenUser}
+        setActive={setActiveEventUsers}
+      />
     )
   } else {
     return (
