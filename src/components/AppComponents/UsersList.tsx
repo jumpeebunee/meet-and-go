@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { IUserFull } from '../../types/types'
 import '../../styles/components/AppComponents/userList.scss';
-import UserItem from '../UserItem';
+import UserItem from './UserItem';
 
 interface UsersListProps {
   users: IUserFull[],

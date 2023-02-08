@@ -1,9 +1,14 @@
+export type IDate = {
+  seconds: number,
+  nanoseconds: number,
+}
+
 export type IEvent = {
   id: string,
   title: string,
   cords: number[],
   place: string,
-  date: string,
+  date: IDate,
   participants: number,
   contribution: number,
   activeUsers: IUserFull[],

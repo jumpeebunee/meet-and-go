@@ -26,7 +26,7 @@ const MainPage = () => {
   const [isCurrentOpen, setIsCurrentOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMeet, setIsMeet] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', date: '', contribution: 0, participants: 0, activeUsers: []});
+  const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', date: {seconds: 0, nanoseconds: 0}, contribution: 0, participants: 0, activeUsers: []});
   const [eventCords, setEventCords] = useState([]);
   const [events, setEvents] = useState<IEvent[]>([]);
   const [activeEventUsers, setActiveEventUsers] = useState(false);
@@ -48,7 +48,7 @@ const MainPage = () => {
   },[])
 
   useMemo(() => {
-    if (!isCurrentOpen && currentEvent.cords.length === 2) setCurrentEvent({id: '', title:'', cords: [], place: '', date: '',  contribution: 0, participants: 0, activeUsers: []});
+    if (!isCurrentOpen && currentEvent.cords.length === 2) setCurrentEvent({id: '', title:'', cords: [], place: '', date: {seconds: 0, nanoseconds: 0},  contribution: 0, participants: 0, activeUsers: []});
   }, [isCurrentOpen])
 
   const createEvent = (e:any) => {

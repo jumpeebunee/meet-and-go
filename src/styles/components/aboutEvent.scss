@@ -58,6 +58,10 @@ $grey-main: rgba(217, 217, 217, 0.2);
   margin-top: 25px;
 }
 
+.about-event__base-info_users {
+  cursor: pointer;
+}
+
 .about-event__base-content {
   display: flex;
   align-items: center;

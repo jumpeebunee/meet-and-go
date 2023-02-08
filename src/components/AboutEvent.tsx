@@ -1,13 +1,10 @@
 import { FC, useMemo, useState } from 'react'
 import { IEvent, IUserFull } from '../types/types'
 import AppModal from './UI/AppModal/AppModal'
-import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
-import format from 'date-fns/format';
-import MainButton from './UI/MainButton/MainButton';
 import SecondButton from './UI/SecondButton/SecondButton';
-import UserAvatars from './UserAvatars';
 import UsersList from './AppComponents/UsersList';
 import UserAbout from './AppComponents/UserAbout';
+import AboutEventModal from './AppModals/AboutEventModal';
 
 interface AboutEventProps {
   isOpen: boolean,
@@ -59,57 +56,14 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentEv
     )
   } else {
     return (
-      <AppModal isOpen={isOpen} setIsOpen={setIsOpen}>  
-        <div>
-          <div className='about-event__date'>{format(new Date('Tue Jan 24 2023 00:00:00 GMT+0300 (Москва, стандартное время)'),'PPPp')}</div>
-          {currentEvent.title
-          ? <h2 className='about-event__heading heading'>{currentEvent.title}</h2>
-          : <div className='about-event__heading_loading'></div>
-          }
-          <div className='about-event__location'>
-            <h3 className='second-heading'>Location</h3>
-            <p>{currentEvent.place}</p>
-          </div>
-            <YMaps
-              query={{
-                apikey: "bb874fcf-3722-4db8-8062-76756ffbcd45",
-              }}
-            >
-            {currentEvent.cords.length === 2 &&
-              <div className='about-event__map-wrapper'>
-                <Map className='about-event__map' defaultState={{zoom: 10, center: centerPosition}}>
-                  <Placemark
-                    options={{
-                      iconLayout: 'default#image',
-                      iconImageHref: '../point.svg',
-                      iconImageSize: [32, 55],
-                    }}
-                    geometry={currentEvent.cords} 
-                />
-                </Map>
-              </div>
-            }
-            </YMaps>
-            <div className='about-event__base-info'>
-              <h2 className='second-heading'>Participants</h2>
-              <div className='about-event__base-content'>
-                <UserAvatars
-                  handleOpen={() => setActiveEventUsers(true)}
-                  users={currentEvent.activeUsers}
-                />
-                <p>{currentEvent.activeUsers.length}/{currentEvent.participants}</p>
-              </div>
-            </div>
-            <div className='about-event__base-info'>
-              <h2 className='second-heading'>Сontribution</h2>
-              <p>${currentEvent.contribution}</p>
-            </div>
-        </div>
-        <div className='create-point__buttons'>
-          <MainButton handle={handleGo} text='Meet and go'/>
-          <SecondButton handle={() => setIsOpen(false)} text='Close'/>
-        </div>
-      </AppModal>
+      <AboutEventModal
+        isOpen={isOpen}
+        currentEvent={currentEvent}
+        centerPosition={centerPosition}
+        handleGo={handleGo}
+        setIsOpen={setIsOpen}
+        setActiveEventUsers={setActiveEventUsers}
+      />
     )
   }
 }

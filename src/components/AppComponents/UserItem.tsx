@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { IUserFull } from '../types/types'
+import { IUserFull } from '../../types/types'
 
 interface UserItemProps {
   user: IUserFull;

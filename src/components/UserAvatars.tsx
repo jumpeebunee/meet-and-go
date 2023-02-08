@@ -3,12 +3,11 @@ import { IUserFull } from '../types/types'
 
 interface UserAvatarsProps {
   users: IUserFull[],
-  handleOpen: () => void,
 }
 
-const UserAvatars:FC<UserAvatarsProps> = ({users, handleOpen}) => {
+const UserAvatars:FC<UserAvatarsProps> = ({users}) => {
   return (
-    <button onClick={handleOpen} className='about-event__avatars'>
+    <button className='about-event__avatars'>
       {users.map(user =>
         <img key={user.uid} alt={user.username} src={user.image} className='about-event__avatar'/>
       )}
