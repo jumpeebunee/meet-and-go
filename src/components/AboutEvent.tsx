@@ -1,11 +1,8 @@
 import { FC, useMemo, useState } from 'react'
 import { IEvent, IUserFull } from '../types/types'
-import AppModal from './UI/AppModal/AppModal'
-import SecondButton from './UI/SecondButton/SecondButton';
-import UsersList from './AppComponents/UsersList';
-import UserAbout from './AppComponents/UserAbout';
 import AboutEventModal from './AppModals/AboutEventModal';
 import ActiveUsersModal from './AppModals/ActiveUsersModal';
+import UserAccountModal from './AppModals/UserAccountModal';
 
 interface AboutEventProps {
   isOpen: boolean,
@@ -41,35 +38,41 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentEv
     setIsUserAccount(false);
   }
 
-  if (isOpenUserAccount) {
-    return (
-      <AppModal isOpen={isOpenUserAccount} setIsOpen={setIsUserAccount}> 
-        <UserAbout user={choosedUser}/>
-        <SecondButton handle={handleCloseUser} text="Close"></SecondButton>
-      </AppModal>
-    )
-  } else if (activeEventUsers) {
-    return (
-      <ActiveUsersModal
-        isOpen={activeEventUsers}
-        users={currentEvent.activeUsers}
-        setIsOpen={setActiveEventUsers}
-        chooseUser={handleOpenUser}
-        setActive={setActiveEventUsers}
-      />
-    )
-  } else {
-    return (
-      <AboutEventModal
-        isOpen={isOpen}
-        currentEvent={currentEvent}
-        centerPosition={centerPosition}
-        handleGo={handleGo}
-        setIsOpen={setIsOpen}
-        setActiveEventUsers={setActiveEventUsers}
-      />
-    )
+  const activeModal = () => {
+    if (isOpenUserAccount) {
+      return (
+        <UserAccountModal
+          isOpen={isOpenUserAccount}
+          user={choosedUser}
+          setIsOpen={setIsUserAccount}
+          handleclose={handleCloseUser}
+        />
+      )
+    } else if (activeEventUsers) {
+      return (
+        <ActiveUsersModal
+          isOpen={activeEventUsers}
+          users={currentEvent.activeUsers}
+          setIsOpen={setActiveEventUsers}
+          chooseUser={handleOpenUser}
+          setActive={setActiveEventUsers}
+        />
+      )
+    } else {
+      return (
+        <AboutEventModal
+          isOpen={isOpen}
+          currentEvent={currentEvent}
+          centerPosition={centerPosition}
+          handleGo={handleGo}
+          setIsOpen={setIsOpen}
+          setActiveEventUsers={setActiveEventUsers}
+        />
+      )
+    }
   }
+
+  return activeModal();
 }
 
 export default AboutEvent
