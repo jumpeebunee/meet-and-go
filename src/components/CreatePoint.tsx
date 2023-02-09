@@ -1,6 +1,6 @@
 import { FC, useState } from "react"
 import { nanoid } from '@reduxjs/toolkit';
-import { collection, addDoc } from "firebase/firestore"; 
+import { setDoc, doc } from "firebase/firestore"; 
 import { db } from "../firebase";
 import { useAppSelector } from "../app/hooks";
 import { currentUserContent } from "../app/feautures/userSlice";
@@ -29,8 +29,9 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords}) => {
 
   const handleCreate = async() => {
     if (eventName.length > 2 && eventLocation.length > 2 && startDate) {
-      await addDoc(collection(db, "events"), {
-        id: nanoid(),
+      const eventId = nanoid();
+      await setDoc(doc(db, "events", eventId), {
+        id: eventId,
         title: eventName,
         cords: eventCords,
         place: eventLocation, 

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { YMaps, Map, Placemark, GeolocationControl } from '@pbe/react-yandex-maps';
 import { IEvent } from '../types/types';
 import { currentUser, currentUserContent } from '../app/feautures/userSlice';
-import { collection, onSnapshot } from "firebase/firestore";
+import { arrayUnion, collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from '../firebase';
 import { useAppSelector } from '../app/hooks';
 import CreatePoint from '../components/CreatePoint';
@@ -22,8 +22,8 @@ const MainPage = () => {
   const userContent = useAppSelector(currentUserContent);
   const navigate = useNavigate();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [isCurrentOpen, setIsCurrentOpen] = useState(false);
+  const [isOpenCreateEvent, setIsOpenCreateEvent] = useState(false);
+  const [isOpenEvent, setIsOpenEvent] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMeet, setIsMeet] = useState(false);
   const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', date: {seconds: 0, nanoseconds: 0}, contribution: 0, participants: 0, activeUsers: []});
@@ -32,6 +32,29 @@ const MainPage = () => {
   const [activeEventUsers, setActiveEventUsers] = useState(false);
 
   useEffect(() => {
+    if (!user.uid) {
+      navigate('/login');
+    } 
+    getData();
+  },[])
+
+  useMemo(() => {
+    if (!isOpenEvent && currentEvent.cords.length === 2) {
+      setCurrentEvent(
+      {
+        id: '',
+        title:'',
+        cords: [],
+        place: '',
+        date: {seconds: 0, nanoseconds: 0}, 
+        contribution: 0,
+        participants: 0,
+        activeUsers: []
+      });
+    }
+  }, [isOpenEvent])
+
+  const getData = () => {
     onSnapshot(collection(db, "events"), doc => {
       const data: IEvent[] = []
       doc.forEach((d) => {
@@ -39,20 +62,10 @@ const MainPage = () => {
       })
       setEvents(data);
     })
-  }, [])
-
-  useEffect(() => {
-    if (!user.uid) {
-      navigate('/login');
-    } 
-  },[])
-
-  useMemo(() => {
-    if (!isCurrentOpen && currentEvent.cords.length === 2) setCurrentEvent({id: '', title:'', cords: [], place: '', date: {seconds: 0, nanoseconds: 0},  contribution: 0, participants: 0, activeUsers: []});
-  }, [isCurrentOpen])
+  }
 
   const createEvent = (e:any) => {
-    setIsOpen(true);
+    setIsOpenCreateEvent(true);
     setEventCords(e.get('coords'));
   }
 
@@ -60,8 +73,21 @@ const MainPage = () => {
     const findedEvent = events.find(event => event.id === id);
     if (findedEvent) {
       setCurrentEvent(findedEvent);
-      setIsCurrentOpen(true);
+      setIsOpenEvent(true);
     }
+  }
+
+  const handleMeet =  async() => {
+    setIsMeet(false);
+    setIsOpenEvent(false);
+    let isActive = currentEvent.activeUsers.find(user => user.uid === userContent.uid);
+    if (!isActive && currentEvent.participants > currentEvent.activeUsers.length) {
+      const userActiveRef = doc(db, "events", currentEvent.id);
+      await updateDoc(userActiveRef, {
+        activeUsers: arrayUnion(userContent),
+      })
+    }
+    getData();
   }
 
   return (
@@ -98,13 +124,13 @@ const MainPage = () => {
           <button className='app__events'><span></span></button>
       </YMaps>
       <CreatePoint 
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isOpenCreateEvent}
+        setIsOpen={setIsOpenCreateEvent}
         eventCords={eventCords}
       />
       <AboutEvent
-        isOpen={isCurrentOpen}
-        setIsOpen={setIsCurrentOpen}
+        isOpen={isOpenEvent}
+        setIsOpen={setIsOpenEvent}
         setIsMeet={setIsMeet}
         currentEvent={currentEvent}
         activeEventUsers={activeEventUsers}
@@ -118,6 +144,7 @@ const MainPage = () => {
         isOpen={isMeet}
         setIsOpen={setIsMeet}
         text={'Go to event?'}
+        handleTrue={handleMeet}
       />
     </div>
   )
