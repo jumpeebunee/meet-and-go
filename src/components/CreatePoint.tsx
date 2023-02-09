@@ -12,12 +12,13 @@ import MainButton from './UI/MainButton/MainButton';
 import SecondButton from './UI/SecondButton/SecondButton';
 
 interface CreatePointProps {
-  isOpen: boolean,
-  eventCords: number[],
-  setIsOpen: (arg: boolean) => void,
+  isOpen: boolean;
+  eventCords: number[];
+  setIsOpen: (arg: boolean) => void;
+  addEventToUser: (id: string) => void;
 }
 
-const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords}) => {
+const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEventToUser}) => {
 
   const user = useAppSelector(currentUserContent);
 
@@ -25,12 +26,12 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords}) => {
   const [participants, setParticipants] = useState(2);
   const [eventName, setEventName] = useState('');
   const [eventLocation, setEventLocation] = useState('');
-  const [startDate, setStartDate] = useState<Date | string>();
+  const [startDate, setStartDate] = useState<Date>();
 
   const handleCreate = async() => {
     if (eventName.length > 2 && eventLocation.length > 2 && startDate) {
       const eventId = nanoid();
-      await setDoc(doc(db, "events", eventId), {
+      const newEvent = {
         id: eventId,
         title: eventName,
         cords: eventCords,
@@ -39,12 +40,14 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords}) => {
         contribution: price,
         participants: participants,
         activeUsers: [{...user}],
-      })
+      }
+      await setDoc(doc(db, "events", eventId), newEvent);
+      addEventToUser(newEvent.id);
       setPrice('0');
       setParticipants(2);
       setEventName('');
       setEventLocation('');
-      setStartDate('');
+      setStartDate(undefined);
       setIsOpen(false);
     } else {
       console.log('Иди нахуй')

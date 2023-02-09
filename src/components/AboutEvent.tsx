@@ -24,7 +24,6 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentEv
   }, [currentEvent])
 
   const handleGo = () => {
-    // setIsOpen(false);
     setIsMeet(true);
   }
 

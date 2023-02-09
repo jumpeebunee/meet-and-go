@@ -60,6 +60,7 @@ const RegisterPage = () => {
           totalMeets: 0,
           createdMeets: 0,
           image: 'https://fastly.picsum.photos/id/103/200/300.jpg?hmac=QNhmiuWX_v7Br1-vACnDXKchd_VJ1OjbxDKwIM2NpD4',
+          activeMeets: [],
         });
         dispatch((addUserContent({          
           uid: response.user.uid,
@@ -72,6 +73,7 @@ const RegisterPage = () => {
           totalMeets: 0,
           createdMeets: 0,
           image: 'https://fastly.picsum.photos/id/103/200/300.jpg?hmac=QNhmiuWX_v7Br1-vACnDXKchd_VJ1OjbxDKwIM2NpD4',
+          activeMeets: [],
         })))
         navigate('/');
       } catch (e: any) {

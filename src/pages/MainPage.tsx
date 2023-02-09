@@ -26,7 +26,18 @@ const MainPage = () => {
   const [isOpenEvent, setIsOpenEvent] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMeet, setIsMeet] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState<IEvent>({id: '', title:'', cords: [], place: '', date: {seconds: 0, nanoseconds: 0}, contribution: 0, participants: 0, activeUsers: []});
+  const [currentEvent, setCurrentEvent] = useState<IEvent>(
+    {
+      id: '', 
+      title:'', 
+      cords: [], 
+      place: '',
+      date: {seconds: 0, nanoseconds: 0}, 
+      contribution: 0, 
+      participants: 0, 
+      activeUsers: []
+    }
+  );
   const [eventCords, setEventCords] = useState([]);
   const [events, setEvents] = useState<IEvent[]>([]);
   const [activeEventUsers, setActiveEventUsers] = useState(false);
@@ -86,8 +97,16 @@ const MainPage = () => {
       await updateDoc(userActiveRef, {
         activeUsers: arrayUnion(userContent),
       })
+      addEventToUser(currentEvent.id);
+      getData();
     }
-    getData();
+  }
+
+  const addEventToUser = async(id: string) => {
+    const userRef = doc(db, "users", userContent.uid);
+    await updateDoc(userRef, {
+      activeMeets: arrayUnion(id),
+    });
   }
 
   return (
@@ -127,6 +146,7 @@ const MainPage = () => {
         isOpen={isOpenCreateEvent}
         setIsOpen={setIsOpenCreateEvent}
         eventCords={eventCords}
+        addEventToUser={addEventToUser}
       />
       <AboutEvent
         isOpen={isOpenEvent}

@@ -14,6 +14,14 @@ export type IEvent = {
   activeUsers: IUserFull[],
 }
 
+export type IEventInfo = {
+  id: string,
+  title: string,
+  place: string,
+  date: IDate | Date,
+  contribution: number,
+}
+
 export type IUser = {
   username: string,
   email: string,
@@ -31,4 +39,5 @@ export type IUserFull = {
   totalMeets: number,
   createdMeets: number,
   image: string,
+  activeMeets: IEvent[],
 }
