@@ -39,12 +39,18 @@ const AboutEventModal:FC<AboutEventModalProps> = ({isOpen, setIsOpen, currentEve
             setActiveEventUsers={setActiveEventUsers}
           />
       </div>
-      <div className='create-point__buttons'>
-        {currentUser.activeMeets.includes(currentEvent.id)
-        ? <MainButton handle={handleLeave} text='Leave event'/>
-        : <MainButton handle={handleGo} text='Meet and go'/>
+      <div>
+        {currentEvent.activeUsers.length === currentEvent.participants
+        ? <SecondButton handle={() => setIsOpen(false)} text='Close'/>
+        :
+        <div className='create-point__buttons'>
+          {currentUser.activeMeets.includes(currentEvent.id)
+          ? <MainButton handle={handleLeave} text='Leave event'/>
+          : <MainButton handle={handleGo} text='Meet and go'/>
+          }
+          <SecondButton handle={() => setIsOpen(false)} text='Close'/>
+        </div>
         }
-        <SecondButton handle={() => setIsOpen(false)} text='Close'/>
       </div>
     </AppModal>
   )
