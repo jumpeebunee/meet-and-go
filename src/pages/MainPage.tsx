@@ -1,9 +1,9 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { YMaps, Map, Placemark, GeolocationControl } from '@pbe/react-yandex-maps';
-import { IEvent } from '../types/types';
+import { IEvent, IUserFull } from '../types/types';
 import { currentUser, currentUserContent } from '../app/feautures/userSlice';
-import { arrayUnion, collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from '../firebase';
 import { useAppSelector } from '../app/hooks';
 import CreatePoint from '../components/CreatePoint';
@@ -38,6 +38,7 @@ const MainPage = () => {
       activeUsers: []
     }
   );
+  const [currentEventUsers, setCurrentEventUsers] = useState<IUserFull[]>([]);
   const [eventCords, setEventCords] = useState([]);
   const [events, setEvents] = useState<IEvent[]>([]);
   const [activeEventUsers, setActiveEventUsers] = useState(false);
@@ -50,6 +51,7 @@ const MainPage = () => {
   },[])
 
   useMemo(() => {
+    if (isOpenEvent && currentEvent.id) currentEvent.activeUsers.map(id => fetchUsers(id));
     if (!isOpenEvent && currentEvent.cords.length === 2) {
       setCurrentEvent(
       {
@@ -62,8 +64,15 @@ const MainPage = () => {
         participants: 0,
         activeUsers: []
       });
+      setCurrentEventUsers([]);
     }
   }, [isOpenEvent])
+
+  async function fetchUsers(id: string) {
+    const docRef = doc(db, "users", id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) setCurrentEventUsers(prev => [...prev, docSnap.data() as IUserFull]);
+  }
 
   const getData = () => {
     onSnapshot(collection(db, "events"), doc => {
@@ -91,11 +100,11 @@ const MainPage = () => {
   const handleMeet =  async() => {
     setIsMeet(false);
     setIsOpenEvent(false);
-    let isActive = currentEvent.activeUsers.find(user => user.uid === userContent.uid);
+    let isActive = currentEvent.activeUsers.find(id => id === userContent.uid);
     if (!isActive && currentEvent.participants > currentEvent.activeUsers.length) {
       const userActiveRef = doc(db, "events", currentEvent.id);
       await updateDoc(userActiveRef, {
-        activeUsers: arrayUnion(userContent),
+        activeUsers: arrayUnion(userContent.uid),
       })
       addEventToUser(currentEvent.id);
       getData();
@@ -152,8 +161,10 @@ const MainPage = () => {
         isOpen={isOpenEvent}
         setIsOpen={setIsOpenEvent}
         setIsMeet={setIsMeet}
+        currentUser={userContent}
         currentEvent={currentEvent}
         activeEventUsers={activeEventUsers}
+        currentEventUsers={currentEventUsers}
         setActiveEventUsers={setActiveEventUsers}
       />
       <UserProfile

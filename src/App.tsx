@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore"; 
+import { collection, doc, getDocs, onSnapshot } from "firebase/firestore"; 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "./firebase";
@@ -31,6 +31,7 @@ const App = () => {
               dispatch(addUserContent(data));
             }
           });
+          subscribeUserUpdates(user.uid);
         }
         navigate('/');
       } else {
@@ -39,6 +40,12 @@ const App = () => {
       setIsLoading(false);
     });
   },[]);
+
+  const subscribeUserUpdates = (id: string) => {
+    onSnapshot(doc(db, "users", id), (doc) => {
+      dispatch(addUserContent(doc.data() as IUserFull));
+    });
+  }
 
   return (
     <div className='app'>

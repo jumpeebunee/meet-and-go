@@ -39,7 +39,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
         date: startDate,
         contribution: price,
         participants: participants,
-        activeUsers: [{...user}],
+        activeUsers: [user.uid],
       }
       await setDoc(doc(db, "events", eventId), newEvent);
       addEventToUser(newEvent.id);
