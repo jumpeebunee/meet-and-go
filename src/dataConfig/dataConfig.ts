@@ -4,3 +4,14 @@ export const MAP_DEFAULT_OPTIONS = {
   iconImageHref: '../point.png',
   iconImageSize: [32, 40],
 }
+
+export const MAP_CENTER = {
+  center: [55.751574, 37.573856],
+  zoom: 10,
+};
+
+export const PLACEMARK_CONFIG = {
+  iconLayout: 'default#image',
+  iconImageHref: '../point.png',
+  iconImageSize: [52, 62],
+}

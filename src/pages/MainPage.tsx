@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { YMaps, Map, Placemark, GeolocationControl } from '@pbe/react-yandex-maps';
 import { IEvent, IUserFull } from '../types/types';
 import { currentUser, currentUserContent } from '../app/feautures/userSlice';
 import { arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
@@ -10,14 +9,10 @@ import CreatePoint from '../components/CreatePoint';
 import AboutEvent from '../components/AboutEvent';
 import UserProfile from '../components/UserProfile';
 import AppModalToggle from '../components/UI/AppModalToggle/AppModalToggle';
+import AppMap from '../components/AppMap';
 
 const MainPage = () => {
-
-  const MAP_CENTER = {
-    center: [55.751574, 37.573856],
-    zoom: 10,
-  };
-
+  
   const user = useAppSelector(currentUser);
   const userContent = useAppSelector(currentUserContent);
   const navigate = useNavigate();
@@ -84,19 +79,6 @@ const MainPage = () => {
     })
   }
 
-  const createEvent = (e:any) => {
-    setIsOpenCreateEvent(true);
-    setEventCords(e.get('coords'));
-  }
-
-  const openEvent = (id: string) => {
-    const findedEvent = events.find(event => event.id === id);
-    if (findedEvent) {
-      setCurrentEvent(findedEvent);
-      setIsOpenEvent(true);
-    }
-  }
-
   const handleMeet =  async() => {
     setIsMeet(false);
     setIsOpenEvent(false);
@@ -120,37 +102,15 @@ const MainPage = () => {
 
   return (
     <div data-testid="map" className='app__content'>
-      <YMaps
-          query={{
-            apikey: "bb874fcf-3722-4db8-8062-76756ffbcd45",
-          }}
-        >
-          <Map onClick={(e:any) => createEvent(e)} className='app__map' defaultState={MAP_CENTER}>
-            {events.map(event =>
-            <div className='app__map-placemark' key={event.id}>
-                <Placemark
-                  onClick={() => openEvent(event.id)}
-                  options={{
-                    iconLayout: 'default#image',
-                    iconImageHref: '../point.png',
-                    iconImageSize: [52, 62],
-                  }}
-                  geometry={event.cords} 
-                />
-              </div>
-            )}
-            <GeolocationControl options={{
-              float: 'left',
-            }} />
-          </Map>
-          <button onClick={() => setIsProfileOpen(true)} className='app__profile'>
-            <div>Account</div>
-            <div className='app__profile-avatar'>
-              <img alt="Avatar" src={userContent.image}/>
-            </div>
-          </button>
-          <button className='app__events'><span></span></button>
-      </YMaps>
+      <AppMap
+        events={events}
+        image={userContent.image}
+        handleOpen={setIsProfileOpen}
+        setEventCords={setEventCords}
+        setIsOpenEvent={setIsOpenEvent}
+        setCurrentEvent={setCurrentEvent}
+        setIsOpenCreateEvent={setIsOpenCreateEvent}
+      />
       <CreatePoint 
         isOpen={isOpenCreateEvent}
         setIsOpen={setIsOpenCreateEvent}
