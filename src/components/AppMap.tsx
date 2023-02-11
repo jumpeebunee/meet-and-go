@@ -13,9 +13,10 @@ interface AppMapProps {
   setIsOpenEvent: (arg: boolean) => void;
   setCurrentEvent: (event: IEvent) => void;
   setIsOpenCreateEvent: (arg: boolean) => void;
+  setIsOpenActiveEvents: (arg: boolean) => void;
 }
 
-const AppMap:FC<AppMapProps> = ({events, image, handleOpen, setEventCords, setIsOpenCreateEvent, setIsOpenEvent, setCurrentEvent}) => {
+const AppMap:FC<AppMapProps> = ({events, image, handleOpen, setEventCords, setIsOpenCreateEvent, setIsOpenEvent, setCurrentEvent, setIsOpenActiveEvents}) => {
 
   const createEvent = (e:any) => {
     setIsOpenCreateEvent(true);
@@ -47,6 +48,7 @@ const AppMap:FC<AppMapProps> = ({events, image, handleOpen, setEventCords, setIs
         image={image}
         handleOpen={handleOpen}
       />
+      <button onClick={() => setIsOpenActiveEvents(true)} className='app__events'><span></span></button> 
     </YMaps>
   )
 }

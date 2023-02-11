@@ -4,19 +4,21 @@ import { currentUser, currentUserContent } from '../app/feautures/userSlice';
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from '../firebase';
 import { useAppSelector } from '../app/hooks';
+import { useAuth } from '../hooks/useAuth';
+import { getEvents } from '../helpers/getEvents';
 import CreatePoint from '../components/CreatePoint';
 import AboutEvent from '../components/AboutEvent';
 import UserProfile from '../components/UserProfile';
 import AppModalToggle from '../components/UI/AppModalToggle/AppModalToggle';
 import AppMap from '../components/AppMap';
-import { useAuth } from '../hooks/useAuth';
-import { getEvents } from '../helpers/getEvents';
+import ActiveEventsModal from '../components/AppModals/ActiveEventsModal';
 
 const MainPage = () => {
 
   const user = useAppSelector(currentUser);
   const userContent = useAppSelector(currentUserContent);
 
+  const [isOpenActiveEvents, setIsOpenActiveEvents] = useState(false);
   const [isOpenCreateEvent, setIsOpenCreateEvent] = useState(false);
   const [isOpenEvent, setIsOpenEvent] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -33,10 +35,10 @@ const MainPage = () => {
       activeUsers: []
     }
   );
-  const [currentEventUsers, setCurrentEventUsers] = useState<IUserFull[]>([]);
   const [eventCords, setEventCords] = useState([]);
   const [events, setEvents] = useState<IEvent[]>([]);
   const [activeEventUsers, setActiveEventUsers] = useState(false);
+  const [currentEventUsers, setCurrentEventUsers] = useState<IUserFull[]>([]);
 
   useAuth(user.uid, getEvents, setEvents);
 
@@ -95,12 +97,20 @@ const MainPage = () => {
         setIsOpenEvent={setIsOpenEvent}
         setCurrentEvent={setCurrentEvent}
         setIsOpenCreateEvent={setIsOpenCreateEvent}
+        setIsOpenActiveEvents={setIsOpenActiveEvents}
       />
       <CreatePoint 
         isOpen={isOpenCreateEvent}
         setIsOpen={setIsOpenCreateEvent}
         eventCords={eventCords}
         addEventToUser={addEventToUser}
+      />
+      <ActiveEventsModal
+        isOpen={isOpenActiveEvents}
+        events={userContent.activeMeets}
+        setIsOpen={setIsOpenActiveEvents}
+        setIsOpenEvent={setIsOpenEvent}
+        setCurrentEvent={setCurrentEvent}
       />
       <AboutEvent
         isOpen={isOpenEvent}
@@ -111,6 +121,7 @@ const MainPage = () => {
         activeEventUsers={activeEventUsers}
         currentEventUsers={currentEventUsers}
         setActiveEventUsers={setActiveEventUsers}
+        setIsOpenActiveEvents={setIsOpenActiveEvents}
       />
       <UserProfile
         isOpen={isProfileOpen}

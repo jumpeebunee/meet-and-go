@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 
 interface AccountBtnProps {
   image: string;
@@ -7,15 +7,12 @@ interface AccountBtnProps {
 
 const AccountBtn:FC<AccountBtnProps> = ({handleOpen, image}) => {
   return (
-    <>
-      <button onClick={() => handleOpen(true)} className='app__profile'>
-        <div>Account</div>
-        <div className='app__profile-avatar'>
-          <img alt="Avatar" src={image}/>
-        </div>
-      </button>
-      <button className='app__events'><span></span></button>
-    </>
+    <button onClick={() => handleOpen(true)} className='app__profile'>
+      <div>Account</div>
+      <div className='app__profile-avatar'>
+        <img alt="Avatar" src={image}/>
+      </div>
+    </button>
   )
 }
 

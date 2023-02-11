@@ -41,6 +41,11 @@ body {
   @include app-font(800, 24px, 29px);
 }
 
+.description {
+  color: rgba(26, 26, 26, 0.7);
+  @include app-font(400, 16px, 127%);
+}
+
 .second-heading {
   @include app-font(800, 18px, 22px);
 }

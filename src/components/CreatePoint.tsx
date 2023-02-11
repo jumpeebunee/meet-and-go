@@ -109,7 +109,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
       </div>
       <div className='create-point__buttons'>
         <MainButton handle={() => handleCreate()} text='Continue'/>
-        <SecondButton handle={() => setIsOpen(false)} text='Cancel'/>
+        <SecondButton handle={() => setIsOpen(false)} text='Close'/>
       </div>
     </AppModal>
   ) 

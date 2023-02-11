@@ -15,9 +15,10 @@ interface AboutEventProps {
   setIsOpen: (arg: boolean) => void,
   setIsMeet: (arg: boolean) => void,
   setActiveEventUsers: (arg: boolean) => void,
+  setIsOpenActiveEvents: (arg: boolean) => void,
 }
 
-const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentUser, currentEvent, activeEventUsers, setActiveEventUsers, currentEventUsers}) => {
+const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentUser, currentEvent, activeEventUsers, setActiveEventUsers, currentEventUsers, setIsOpenActiveEvents}) => {
 
   const [centerPosition, setCenterPosition] = useState([55.751574, 37.573856]);
   const [choosedUser, setChoosedUser] = useState<IUserFull | null>(null);
@@ -33,6 +34,7 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentUs
 
   const handleLeave = async() => {
     setIsOpen(false);
+    setIsOpenActiveEvents(false);
     const userEvents = doc(db, "users", currentUser.uid);
     const eventUser = doc(db, "events", currentEvent.id);
 
