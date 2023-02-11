@@ -1,8 +1,7 @@
-import { useState, useMemo, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo } from 'react'
 import { IEvent, IUserFull } from '../types/types';
 import { currentUser, currentUserContent } from '../app/feautures/userSlice';
-import { arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from '../firebase';
 import { useAppSelector } from '../app/hooks';
 import CreatePoint from '../components/CreatePoint';
@@ -10,12 +9,13 @@ import AboutEvent from '../components/AboutEvent';
 import UserProfile from '../components/UserProfile';
 import AppModalToggle from '../components/UI/AppModalToggle/AppModalToggle';
 import AppMap from '../components/AppMap';
+import { useAuth } from '../hooks/useAuth';
+import { getEvents } from '../helpers/getEvents';
 
 const MainPage = () => {
-  
+
   const user = useAppSelector(currentUser);
   const userContent = useAppSelector(currentUserContent);
-  const navigate = useNavigate();
 
   const [isOpenCreateEvent, setIsOpenCreateEvent] = useState(false);
   const [isOpenEvent, setIsOpenEvent] = useState(false);
@@ -38,12 +38,7 @@ const MainPage = () => {
   const [events, setEvents] = useState<IEvent[]>([]);
   const [activeEventUsers, setActiveEventUsers] = useState(false);
 
-  useEffect(() => {
-    if (!user.uid) {
-      navigate('/login');
-    } 
-    getData();
-  },[])
+  useAuth(user.uid, getEvents, setEvents);
 
   useMemo(() => {
     if (isOpenEvent && currentEvent.id) currentEvent.activeUsers.map(id => fetchUsers(id));
@@ -69,16 +64,6 @@ const MainPage = () => {
     if (docSnap.exists()) setCurrentEventUsers(prev => [...prev, docSnap.data() as IUserFull]);
   }
 
-  const getData = () => {
-    onSnapshot(collection(db, "events"), doc => {
-      const data: IEvent[] = []
-      doc.forEach((d) => {
-        data.push(d.data() as IEvent);
-      })
-      setEvents(data);
-    })
-  }
-
   const handleMeet =  async() => {
     setIsMeet(false);
     setIsOpenEvent(false);
@@ -89,7 +74,7 @@ const MainPage = () => {
         activeUsers: arrayUnion(userContent.uid),
       })
       addEventToUser(currentEvent.id);
-      getData();
+      getEvents(setEvents);
     }
   }
 
