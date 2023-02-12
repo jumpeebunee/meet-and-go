@@ -1,4 +1,4 @@
-import { arrayRemove, doc, updateDoc } from 'firebase/firestore';
+import { arrayRemove, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { FC, useMemo, useState } from 'react'
 import { db } from '../firebase';
 import { IEvent, IUserFull } from '../types/types'
@@ -44,6 +44,7 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentUs
     await updateDoc(eventUser, {
       activeUsers: arrayRemove(currentUser.uid),
     });
+    if (currentEvent.activeUsers.length === 1) await deleteDoc(doc(db, "events", currentEvent.id));
   }
 
   const handleOpenUser = (user: IUserFull) => {
