@@ -1,10 +1,9 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react'
 import { db } from '../../firebase';
-import { formatDate } from '../../helpers/formatDate';
 import { IEvent } from '../../types/types';
 import AppList from '../AppComponents/AppList';
-import EventItem from '../EventComponents/EventItem';
+import EventItem from '../EventComponents/EventItem/EventItem';
 import AppModal from '../UI/AppModal/AppModal'
 import SecondButton from '../UI/SecondButton/SecondButton';
 import UserAvatars from '../UserAvatars';
@@ -43,16 +42,15 @@ const ActiveEventsModal:FC<ActiveEventsModal> = ({isOpen, setIsOpen, events, set
         <h2 data-testid="create-point" className='heading'>Active events</h2>
         {events.length
         ?
-          <AppList>
+          <ul>
             {totalEvents.map(event => 
-              <li key={event.id} onClick={() => handleOpen(event)}>
-                <div>
-                  <h3>{event.title}</h3>
-                  <p>{formatDate(event.date)}</p>
-                </div>
-              </li>
+              <EventItem
+                title={event.title}
+                date={event.date}
+                place={event.place}
+              />
             )}
-          </AppList>
+          </ul>
         :
           <p style={{marginTop: '15px'}} className='description'>You don't have any active events, join and then they will appear here</p>
         }
