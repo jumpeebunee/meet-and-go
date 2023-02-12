@@ -17,8 +17,8 @@ const UserAbout:FC<UserAboutProps> = ({user}) => {
           <AppList>
             <UserProfileBaseItem title="Total meets" body={user.totalMeets}/>
             <UserProfileBaseItem title="Created meets" body={user.createdMeets}/>
-            <UserProfileBaseItem title="Town" body={user.town}/>
-            <UserProfileBaseItem title="Phone" body={user.phone}/>
+            {user.town && <UserProfileBaseItem title="Town" body={user.town}/>}
+            {user.phone && <UserProfileBaseItem title="Phone" body={user.phone}/>}
           </AppList>
         </div>
       }
