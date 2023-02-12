@@ -5,6 +5,7 @@ import { IEvent } from '../../types/types';
 import EventItem from '../EventComponents/EventItem/EventItem';
 import AppModal from '../UI/AppModal/AppModal'
 import SecondButton from '../UI/SecondButton/SecondButton';
+import CreateEventError from './ErrorModal';
 
 interface ActiveEventsModal {
   isOpen: boolean;
@@ -34,27 +35,34 @@ const ActiveEventsModal:FC<ActiveEventsModal> = ({isOpen, setIsOpen, events, set
     setCurrentEvent(event);
   }
 
-  return (
-    <AppModal style={{paddingTop: '60px'}} isOpen={isOpen} setIsOpen={setIsOpen}>
+  if (events.length) {
+    return (
+      <AppModal style={{paddingTop: '60px'}} isOpen={isOpen} setIsOpen={setIsOpen}>
       <div>
         <h2 data-testid="create-point" className='heading'>Active events</h2>
-        {events.length
-        ?
           <ul>
             {totalEvents.map(event => 
               <EventItem
+                key={event.id}
                 event={event}
                 handle={handleOpen}
               />
             )}
           </ul>
-        :
-          <p style={{marginTop: '15px'}} className='description'>You don't have any active events, join and then they will appear here</p>
-        }
       </div>
       <SecondButton text='Close' handle={() => setIsOpen(false)}/>
     </AppModal>
-  )
+    )
+  } else {
+    return (
+      <CreateEventError
+        error='Not found events'
+        message="You don't have any active events, join and then they will appear here"
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
+    )
+  }
 }
 
 export default ActiveEventsModal

@@ -59,7 +59,7 @@ const RegisterPage = () => {
           interests: [],
           totalMeets: 0,
           createdMeets: 0,
-          image: 'https://fastly.picsum.photos/id/103/200/300.jpg?hmac=QNhmiuWX_v7Br1-vACnDXKchd_VJ1OjbxDKwIM2NpD4',
+          image: 'https://i.yapx.ru/VfaKB.png',
           activeMeets: [],
         });
         dispatch((addUserContent({          
@@ -72,7 +72,7 @@ const RegisterPage = () => {
           interests: [],
           totalMeets: 0,
           createdMeets: 0,
-          image: 'https://fastly.picsum.photos/id/103/200/300.jpg?hmac=QNhmiuWX_v7Br1-vACnDXKchd_VJ1OjbxDKwIM2NpD4',
+          image: 'https://i.yapx.ru/VfaKB.png',
           activeMeets: [],
         })))
         navigate('/');
