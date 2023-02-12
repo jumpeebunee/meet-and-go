@@ -1,6 +1,6 @@
 import { FC, useState } from "react"
 import { nanoid } from '@reduxjs/toolkit';
-import { setDoc, doc } from "firebase/firestore"; 
+import { setDoc, doc, updateDoc } from "firebase/firestore"; 
 import { db } from "../firebase";
 import { useAppSelector } from "../app/hooks";
 import { currentUserContent } from "../app/feautures/userSlice";
@@ -43,6 +43,10 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
         activeUsers: [user.uid],
       }
       await setDoc(doc(db, "events", eventId), newEvent);
+      await updateDoc(doc(db, "users", user.uid), {
+        createdMeets: user.createdMeets + 1,
+        reputation: user.reputation + 100,
+      })
       addEventToUser(newEvent.id);
       setPrice('0');
       setParticipants(2);
