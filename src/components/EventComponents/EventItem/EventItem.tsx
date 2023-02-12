@@ -1,29 +1,28 @@
 import cl from './EventItem.module.scss';
 import { FC } from 'react'
 import { formatDate } from '../../../helpers/formatDate';
-import { IDate } from '../../../types/types';
+import { IEvent } from '../../../types/types';
 import dateIcon from '../../../assets/date.svg';
 import mapIcon from '../../../assets/map.svg';
 import EventItemAbout from '../EventItemAbout/EventItemAbout';
 
 interface EventItemProps {
-  title: string;
-  place: string;
-  date: IDate;
+  event: IEvent;
+  handle: (event: IEvent) => void;
 }
  
-const EventItem:FC<EventItemProps> = ({date, title, place}) => {
+const EventItem:FC<EventItemProps> = ({event, handle}) => {
   return (
-    <li className={cl.eventItem}>
+    <li onClick={() => handle(event)} className={cl.eventItem}>
       <div className={cl.eventItemContent}>
-        <h3>{title}</h3>
+        <h3>{event.title}</h3>
         <ul className={cl.eventItemAboutList}>
           <EventItemAbout
-            text={formatDate(date)}
+            text={formatDate(event.date)}
             icon={dateIcon}
           />
           <EventItemAbout
-            text={place}
+            text={event.place}
             icon={mapIcon}
           />
         </ul>

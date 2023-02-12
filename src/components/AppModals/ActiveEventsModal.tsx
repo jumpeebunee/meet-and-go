@@ -45,9 +45,8 @@ const ActiveEventsModal:FC<ActiveEventsModal> = ({isOpen, setIsOpen, events, set
           <ul>
             {totalEvents.map(event => 
               <EventItem
-                title={event.title}
-                date={event.date}
-                place={event.place}
+                event={event}
+                handle={handleOpen}
               />
             )}
           </ul>
