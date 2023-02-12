@@ -2,11 +2,9 @@ import { doc, getDoc } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react'
 import { db } from '../../firebase';
 import { IEvent } from '../../types/types';
-import AppList from '../AppComponents/AppList';
 import EventItem from '../EventComponents/EventItem/EventItem';
 import AppModal from '../UI/AppModal/AppModal'
 import SecondButton from '../UI/SecondButton/SecondButton';
-import UserAvatars from '../UserAvatars';
 
 interface ActiveEventsModal {
   isOpen: boolean;

@@ -15,3 +15,4 @@ export const PLACEMARK_CONFIG = {
   iconImageHref: '../point.png',
   iconImageSize: [52, 62],
 }
+ 

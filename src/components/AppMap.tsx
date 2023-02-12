@@ -1,4 +1,4 @@
-import { YMaps, Map, GeolocationControl } from '@pbe/react-yandex-maps';
+import { YMaps, Map, GeolocationControl, SearchControl } from '@pbe/react-yandex-maps';
 import { FC } from 'react';
 import { API_KEY, MAP_CENTER } from '../dataConfig/dataConfig';
 import { IEvent } from '../types/types';
@@ -43,6 +43,7 @@ const AppMap:FC<AppMapProps> = ({events, image, handleOpen, setEventCords, setIs
           />
         )}
         <GeolocationControl options={{float: 'left'}}/>
+        <SearchControl options={{position: {bottom: 'true'},}}/>
       </Map>
       <AccountBtn
         image={image}
