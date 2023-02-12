@@ -11,6 +11,7 @@ import UserProfileMain from './UserProfileMain';
 import UserProfileBaseItem from './UserProfileBaseItem';
 import UserProfileEditableItem from './UserProfileEditableItem';
 import AppList from './AppComponents/AppList';
+import { validateTown } from '../helpers/validateTown';
 
 interface UserProfileProps {
   isOpen: boolean,
@@ -28,20 +29,25 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
 
   const handleEdit = async() => {
     if (isEdit) {
-      if (validatePhone(phone)) {
-        setIsEdit(false);
-        const userRef = doc(db, "users", currentUser.uid);
-        await updateDoc(userRef, {
-          phone,
-          town,
-        });
+      if (validatePhone(phone) && validateTown(town)) {
+        updateData();
       } else {
-        setIsError('Wrong number!');
+        setIsError('Wrong phone or town');
       }
     } else {
       setIsEdit(true);
       setIsError('');
     }
+  }
+
+  const updateData = async() => {
+    setIsEdit(false);
+    const userRef = doc(db, "users", currentUser.uid);
+    await updateDoc(userRef, {
+      phone,
+      town,
+    });
+    setIsError('');
   }
 
   const changePhone = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +58,7 @@ const UserProfile:FC<UserProfileProps> = ({isOpen, setIsOpen}) => {
 
   const changeTown = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target.value;
-    if (target.length >= 0 && target.length < 12) {
+    if (target.length >= 0 && target.length < 15) {
       setTown(target);
     }
     return;
