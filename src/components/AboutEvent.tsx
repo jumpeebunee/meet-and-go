@@ -75,6 +75,7 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentUs
           setIsOpen={setActiveEventUsers}
           chooseUser={handleOpenUser}
           setActive={setActiveEventUsers}
+          currentEvent={currentEvent}
         />
       )
     } else {
