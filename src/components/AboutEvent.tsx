@@ -1,6 +1,4 @@
-import { arrayRemove, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { FC, useMemo, useState } from 'react'
-import { db } from '../firebase';
 import { IEvent, IUserFull } from '../types/types'
 import AboutEventModal from './AppModals/AboutEventModal';
 import ActiveUsersModal from './AppModals/ActiveUsersModal';
@@ -30,21 +28,6 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentUs
 
   const handleGo = () => {
     setIsMeet(true);
-  }
-
-  const handleLeave = async() => {
-    setIsOpen(false);
-    setIsOpenActiveEvents(false);
-    const userEvents = doc(db, "users", currentUser.uid);
-    const eventUser = doc(db, "events", currentEvent.id);
-
-    await updateDoc(userEvents, {
-      activeMeets: arrayRemove(currentEvent.id),
-    });
-    await updateDoc(eventUser, {
-      activeUsers: arrayRemove(currentUser.uid),
-    });
-    if (currentEvent.leader === currentUser.uid) await deleteDoc(doc(db, "events", currentEvent.id));
   }
 
   const handleOpenUser = (user: IUserFull) => {
@@ -85,10 +68,10 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentUs
           currentEvent={currentEvent}
           centerPosition={centerPosition}
           handleGo={handleGo}
-          handleLeave={handleLeave}
           setIsOpen={setIsOpen}
           currentEventUsers={currentEventUsers}
           setActiveEventUsers={setActiveEventUsers}
+          setIsOpenActiveEvents={setIsOpenActiveEvents}
         />
       )
     }

@@ -8,20 +8,32 @@ import SecondButton from '../UI/SecondButton/SecondButton';
 import EventTitle from '../EventComponents/EventTitle';
 import EventMap from '../EventComponents/EventMap';
 import EventAbout from '../EventComponents/EventAbout';
+import { clearEventData } from '../../helpers/clearEventData';
 interface AboutEventModalProps {
   isOpen: boolean;
   currentEvent: IEvent,
   currentEventUsers: IUserFull[],
   centerPosition: number[],
   handleGo: () => void;
-  handleLeave: () => void;
   setIsOpen: (arg: boolean) => void;
   setActiveEventUsers: (arg: boolean) => void;
+  setIsOpenActiveEvents: (arg: boolean) => void;
 }
 
-const AboutEventModal:FC<AboutEventModalProps> = ({isOpen, setIsOpen, currentEvent, setActiveEventUsers, handleGo, handleLeave, centerPosition, currentEventUsers}) => {
+const AboutEventModal:FC<AboutEventModalProps> = ({isOpen, setIsOpen, currentEvent, setActiveEventUsers, handleGo, centerPosition, currentEventUsers, setIsOpenActiveEvents}) => {
 
   const currentUser = useAppSelector(currentUserContent);
+
+  const handleLeave = async() => {
+    setIsOpen(false);
+    setIsOpenActiveEvents(false);
+    clearEventData(
+      currentUser.uid,
+      currentEvent.id,
+      currentEvent.leader,
+      currentEvent.activeUsers
+    );
+  }
 
   return (
     <AppModal isOpen={isOpen} setIsOpen={setIsOpen}>  
@@ -41,7 +53,11 @@ const AboutEventModal:FC<AboutEventModalProps> = ({isOpen, setIsOpen, currentEve
       </div>
       <div>
         {currentEvent.activeUsers.length === currentEvent.participants
-        ? <SecondButton handle={() => setIsOpen(false)} text='Close'/>
+        ? 
+        <div className='create-point__buttons'>
+          <MainButton handle={handleLeave} text='Leave event'/>
+          <SecondButton handle={() => setIsOpen(false)} text='Close'/>
+        </div>
         :
         <div className='create-point__buttons'>
           {currentUser.activeMeets.includes(currentEvent.id)
