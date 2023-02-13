@@ -7,7 +7,7 @@ import AppModal from '../UI/AppModal/AppModal'
 import SecondButton from '../UI/SecondButton/SecondButton';
 import CreateEventError from './ErrorModal';
 
-interface ActiveEventsModal {
+interface ActiveEventsModalProps {
   isOpen: boolean;
   events: string[];
   setIsOpen: (arg: boolean) => void;
@@ -15,7 +15,7 @@ interface ActiveEventsModal {
   setCurrentEvent: (arg: IEvent) => void;
 }
 
-const ActiveEventsModal:FC<ActiveEventsModal> = ({isOpen, setIsOpen, events, setIsOpenEvent, setCurrentEvent}) => {
+const ActiveEventsModal:FC<ActiveEventsModalProps> = ({isOpen, setIsOpen, events, setIsOpenEvent, setCurrentEvent}) => {
 
   const [totalEvents, setTotalEvents] = useState<IEvent[]>([]);
 

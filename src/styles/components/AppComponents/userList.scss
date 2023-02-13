@@ -13,6 +13,7 @@
   align-items: center;
   gap: 15px;
   cursor: pointer;
+  position: relative;
 
   img {
     width: 46px;
@@ -31,4 +32,18 @@
     line-height: 15px;
     color: rgba(0, 0, 0, 0.6);
   }
+}
+
+.user-list__item_active {
+  padding-bottom: 15px;
+  border-bottom: solid 1px #F1F1F1;
+}
+
+.user-list__item_active-img {
+  width: 37px;
+  height: 28px;
+  background-image: url(../../../assets/king.svg);
+  top: -16px;
+  left: 5px;
+  position: absolute;
 }

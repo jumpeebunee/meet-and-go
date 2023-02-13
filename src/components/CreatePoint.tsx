@@ -34,6 +34,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
       const eventId = nanoid();
       const newEvent = {
         id: eventId,
+        leader: user.uid,
         title: eventName,
         cords: eventCords,
         place: eventLocation, 

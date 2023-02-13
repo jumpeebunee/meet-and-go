@@ -26,6 +26,7 @@ const MainPage = () => {
   const [currentEvent, setCurrentEvent] = useState<IEvent>(
     {
       id: '', 
+      leader: '',
       title:'', 
       cords: [], 
       place: '',
@@ -48,6 +49,7 @@ const MainPage = () => {
       setCurrentEvent(
       {
         id: '',
+        leader: '',
         title:'',
         cords: [],
         place: '',

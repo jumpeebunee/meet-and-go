@@ -12,8 +12,8 @@ const UsersList:FC<UsersListProps> = ({users, handleChoose}) => {
   return (
     <ul className='user-list'>
       <h2 className='heading'>Active users</h2>
-      {users.map(user =>
-        <UserItem key={user.uid} user={user} handleOpen={handleChoose}/>
+      {users.map((user, index) =>
+        <UserItem creator={index === 0} key={user.uid} user={user} handleOpen={handleChoose}/>
       )}
     </ul>
   )

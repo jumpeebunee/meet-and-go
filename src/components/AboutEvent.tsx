@@ -44,7 +44,7 @@ const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentUs
     await updateDoc(eventUser, {
       activeUsers: arrayRemove(currentUser.uid),
     });
-    if (currentEvent.activeUsers.length === 1) await deleteDoc(doc(db, "events", currentEvent.id));
+    if (currentEvent.leader === currentUser.uid) await deleteDoc(doc(db, "events", currentEvent.id));
   }
 
   const handleOpenUser = (user: IUserFull) => {
