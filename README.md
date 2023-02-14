@@ -1,6 +1,10 @@
 # Event Map Application
 
+![logo](/public/meetandgo-logo-green.png)
+
 ## Meet And Go!
+
+![intro](/public/meetandgointro.jpg)
 
 Live Demo (NEED LINK). The application allows you to search for events by interests. Create events. Meet and search for public companies.
 
@@ -17,10 +21,6 @@ The application is based on React JS, Redux and TypeScript.
 ## Main Page
 
 ![MainPage](https://i.postimg.cc/nz90JsJL/image.png)
-
-
-
-
 
 ## Available Scripts
 
