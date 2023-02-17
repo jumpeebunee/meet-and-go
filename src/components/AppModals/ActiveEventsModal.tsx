@@ -38,7 +38,7 @@ const ActiveEventsModal:FC<ActiveEventsModalProps> = ({isOpen, setIsOpen, events
   if (events.length) {
     return (
       <AppModal style={{paddingTop: '60px'}} isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div>
+      <div className='active-events__list'>
         <h2 data-testid="create-point" className='heading'>Active events</h2>
           <ul>
             {totalEvents.map(event => 

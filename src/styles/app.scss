@@ -160,3 +160,8 @@ body {
     background-image: url(../assets/events.svg);
   }
 }
+
+.active-events__list {
+  margin-bottom: 20px;
+  overflow-y: scroll;
+}
