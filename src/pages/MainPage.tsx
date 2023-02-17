@@ -12,6 +12,7 @@ import UserProfile from '../components/UserProfile';
 import AppModalToggle from '../components/UI/AppModalToggle/AppModalToggle';
 import AppMap from '../components/AppMap';
 import ActiveEventsModal from '../components/AppModals/ActiveEventsModal';
+import { ratingConfig } from '../dataConfig/ratingConfig';
 
 const MainPage = () => {
 
@@ -77,6 +78,9 @@ const MainPage = () => {
       await updateDoc(userActiveRef, {
         activeUsers: arrayUnion(userContent.uid),
       })
+      await updateDoc(doc(db, "users", userContent.uid), {
+        reputation: userContent.reputation + ratingConfig.meet,
+      })
       addEventToUser(currentEvent.id);
       getEvents(setEvents);
     }
@@ -118,7 +122,6 @@ const MainPage = () => {
         isOpen={isOpenEvent}
         setIsOpen={setIsOpenEvent}
         setIsMeet={setIsMeet}
-        currentUser={userContent}
         currentEvent={currentEvent}
         activeEventUsers={activeEventUsers}
         currentEventUsers={currentEventUsers}

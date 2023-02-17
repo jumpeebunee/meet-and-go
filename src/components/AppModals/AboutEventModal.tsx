@@ -9,6 +9,7 @@ import EventTitle from '../EventComponents/EventTitle';
 import EventMap from '../EventComponents/EventMap';
 import EventAbout from '../EventComponents/EventAbout';
 import { clearEventData } from '../../helpers/clearEventData';
+
 interface AboutEventModalProps {
   isOpen: boolean;
   currentEvent: IEvent,
@@ -29,6 +30,7 @@ const AboutEventModal:FC<AboutEventModalProps> = ({isOpen, setIsOpen, currentEve
     setIsOpenActiveEvents(false);
     clearEventData(
       currentUser.uid,
+      currentUser.reputation,
       currentEvent.id,
       currentEvent.leader,
       currentEvent.activeUsers

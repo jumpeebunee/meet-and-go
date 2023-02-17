@@ -8,7 +8,6 @@ interface AboutEventProps {
   isOpen: boolean,
   activeEventUsers: boolean,
   currentEvent: IEvent,
-  currentUser: IUserFull,
   currentEventUsers: IUserFull[],
   setIsOpen: (arg: boolean) => void,
   setIsMeet: (arg: boolean) => void,
@@ -16,7 +15,7 @@ interface AboutEventProps {
   setIsOpenActiveEvents: (arg: boolean) => void,
 }
 
-const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentUser, currentEvent, activeEventUsers, setActiveEventUsers, currentEventUsers, setIsOpenActiveEvents}) => {
+const AboutEvent:FC<AboutEventProps> = ({isOpen, setIsOpen, setIsMeet, currentEvent, activeEventUsers, setActiveEventUsers, currentEventUsers, setIsOpenActiveEvents}) => {
 
   const [centerPosition, setCenterPosition] = useState([55.751574, 37.573856]);
   const [choosedUser, setChoosedUser] = useState<IUserFull | null>(null);

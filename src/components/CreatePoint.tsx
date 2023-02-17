@@ -11,6 +11,7 @@ import AppModal from './UI/AppModal/AppModal';
 import MainButton from './UI/MainButton/MainButton';
 import SecondButton from './UI/SecondButton/SecondButton';
 import CreateEventError from "./AppModals/ErrorModal";
+import { ratingConfig } from "../dataConfig/ratingConfig";
 
 interface CreatePointProps {
   isOpen: boolean;
@@ -46,7 +47,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
       await setDoc(doc(db, "events", eventId), newEvent);
       await updateDoc(doc(db, "users", user.uid), {
         createdMeets: user.createdMeets + 1,
-        reputation: user.reputation + 100,
+        reputation: user.reputation + ratingConfig.create,
       })
       addEventToUser(newEvent.id);
       setPrice('0');
@@ -56,7 +57,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
       setStartDate(undefined);
       setIsOpen(false);
     } else {
-      console.log('Иди нахуй')
+      console.log('Error')
     }
   }
 
