@@ -12,6 +12,7 @@ import MainButton from './UI/MainButton/MainButton';
 import SecondButton from './UI/SecondButton/SecondButton';
 import CreateEventError from "./AppModals/ErrorModal";
 import { ratingConfig } from "../dataConfig/ratingConfig";
+import { getRandomColor } from "../helpers/getRandomColor";
 
 interface CreatePointProps {
   isOpen: boolean;
@@ -35,6 +36,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
       const eventId = nanoid();
       const newEvent = {
         id: eventId,
+        iconColor: getRandomColor(),
         leader: user.uid,
         title: eventName,
         cords: eventCords,

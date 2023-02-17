@@ -28,6 +28,7 @@ const MainPage = () => {
     {
       id: '', 
       leader: '',
+      iconColor: 1,
       title:'', 
       cords: [], 
       place: '',
@@ -52,6 +53,7 @@ const MainPage = () => {
         id: '',
         leader: '',
         title:'',
+        iconColor: 1,
         cords: [],
         place: '',
         date: {seconds: 0, nanoseconds: 0}, 

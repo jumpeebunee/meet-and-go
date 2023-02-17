@@ -10,9 +10,11 @@ export const MAP_CENTER = {
   zoom: 10,
 };
 
-export const PLACEMARK_CONFIG = {
-  iconLayout: 'default#image',
-  iconImageHref: '../point.png',
-  iconImageSize: [52, 62],
+export const PLACEMARK_CONFIG = (color: number) => {
+  return {
+    iconLayout: 'default#image',
+    iconImageHref: `../point-${color}.png`,
+    iconImageSize: [52, 62],
+  }
 }
  

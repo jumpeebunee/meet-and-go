@@ -22,7 +22,7 @@ const MapPlacemark:FC<MapPlacemarkProps> = ({openEvent, currenEvent}) => {
     <div className='app__map-placemark'>
       <Placemark
         onClick={() => openEvent(currenEvent.id)}
-        options={PLACEMARK_CONFIG}
+        options={PLACEMARK_CONFIG(currenEvent.iconColor)}
         geometry={currenEvent.cords} 
       />
     </div>

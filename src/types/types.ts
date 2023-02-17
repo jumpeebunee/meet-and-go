@@ -6,6 +6,7 @@ export type IDate = {
 export type IEvent = {
   id: string,
   leader: string,
+  iconColor: number,
   title: string,
   cords: number[],
   place: string,
