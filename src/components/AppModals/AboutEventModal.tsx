@@ -33,7 +33,8 @@ const AboutEventModal:FC<AboutEventModalProps> = ({isOpen, setIsOpen, currentEve
       currentUser.reputation,
       currentEvent.id,
       currentEvent.leader,
-      currentEvent.activeUsers
+      currentEvent.activeUsers,
+      currentUser.currentCreated,
     );
   }
 

@@ -36,9 +36,8 @@ const AppMap:FC<AppMapProps> = ({events, image, handleOpen, setEventCords, setIs
       <Map onClick={(e:any) => createEvent(e)} className='app__map' defaultState={MAP_CENTER}>
         {events.map(event =>
           <MapPlacemark
-            id={event.id}
+            currenEvent={event}
             key={event.id}
-            cords={event.cords}
             openEvent={openEvent}
           />
         )}

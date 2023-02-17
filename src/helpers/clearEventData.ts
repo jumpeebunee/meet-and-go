@@ -1,16 +1,16 @@
 import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
-export const clearEventData = async(userID: string, reputation: number, eventID: string, leader: string, activeUsers: string[]) => {
+export const clearEventData = async(userID: string, reputation: number, eventID: string, leader: string, activeUsers: string[], currentCreated: number) => {
   const userEvents = doc(db, "users", userID);
   const eventUser = doc(db, "events", eventID);
 
   if (leader === userID) {
     for (let user of activeUsers) {
       if (user === leader) {
-        removeEventFromUser(user, eventID, leader, reputation);
+        removeEventFromUser(user, eventID, reputation, currentCreated);
       } else {
-        removeEventFromUser(user, eventID, leader);
+        removeEventFromUser(user, eventID);
       }
     }
     await deleteDoc(doc(db, "events", eventID));
@@ -24,12 +24,13 @@ export const clearEventData = async(userID: string, reputation: number, eventID:
   }
 }
 
-const removeEventFromUser = async(user: string, id: string, leader: string, reputation?: number) => {
+const removeEventFromUser = async(user: string, id: string, reputation?: number, currentCreated?: number) => {
   const userEvent = doc(db, "users", user);
-  if (reputation) {
+  if (reputation && currentCreated) {
     await updateDoc(userEvent, {
       activeMeets: arrayRemove(id),
       reputation: reputation - 150,
+      currentCreated: currentCreated - 1,
     });
   } else {
     await updateDoc(userEvent, {

@@ -47,6 +47,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
       await setDoc(doc(db, "events", eventId), newEvent);
       await updateDoc(doc(db, "users", user.uid), {
         createdMeets: user.createdMeets + 1,
+        currentCreated: user.currentCreated + 1,
         reputation: user.reputation + ratingConfig.create,
       })
       addEventToUser(newEvent.id);
@@ -71,7 +72,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
     setParticipants(prev => prev - 1);
   }
 
-  if (user.createdMeets >= 3) {
+  if (user.currentCreated >= 3) {
     return (
       <CreateEventError
         error="Can't create event"

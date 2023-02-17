@@ -80,6 +80,7 @@ const MainPage = () => {
       })
       await updateDoc(doc(db, "users", userContent.uid), {
         reputation: userContent.reputation + ratingConfig.meet,
+        totalMeets: userContent.totalMeets + 1,
       })
       addEventToUser(currentEvent.id);
       getEvents(setEvents);

@@ -58,6 +58,7 @@ const RegisterPage = () => {
           town: '',
           interests: [],
           totalMeets: 0,
+          currentCreated: 0,
           createdMeets: 0,
           image: 'https://i.yapx.ru/VfaKB.png',
           activeMeets: [],
@@ -72,6 +73,7 @@ const RegisterPage = () => {
           interests: [],
           totalMeets: 0,
           createdMeets: 0,
+          currentCreated: 0,
           image: 'https://i.yapx.ru/VfaKB.png',
           activeMeets: [],
         })))

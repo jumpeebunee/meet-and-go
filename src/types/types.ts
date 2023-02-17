@@ -30,6 +30,7 @@ export type IUserFull = {
   username: string,
   reputation: number,
   totalMeets: number,
+  currentCreated: number
   createdMeets: number,
   image: string,
   activeMeets: string[],
