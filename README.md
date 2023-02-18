@@ -1,6 +1,12 @@
+<!-- center code math uml theme:white -->
+
 # Event Map Application
 
+<image src="./public/meetandgo-logo-green.png" alt="intro-img" width="100px">
+
 ## Meet And Go!
+
+<image src="./public/intro.jpg" alt="intro-img" width="600px">
 
 Live Demo (NEED LINK). The application allows you to search for events by interests. Create events. Meet and search for public companies.
 
@@ -10,17 +16,11 @@ In the application, you can create an account, add contacts for communication, g
 
 The main purpose of the application is public access to events for everyone. Every event contain a list of participants, number of people, it is possible to go to the profile and look at the participant and his reputation.
 
+<image src="./public/examples.jpg" alt="example" width="600px">
+
 ## Stack
 
 The application is based on React JS, Redux and TypeScript.
-
-## Main Page
-
-![MainPage](https://i.postimg.cc/nz90JsJL/image.png)
-
-
-
-
 
 ## Available Scripts
 
