@@ -1,7 +1,7 @@
 import { FC } from 'react'
-import { IEvent, IUserFull } from '../../types/types'
-import '../../styles/components/AppComponents/userList.scss';
-import UserItem from './UserItem';
+import { IEvent, IUserFull } from '../../../types/types';
+import UserItem from '../../AppComponents/UserItem';
+import cl from '../UsersList/UserList.module.scss';
 
 interface UsersListProps {
   users: IUserFull[],
@@ -11,7 +11,7 @@ interface UsersListProps {
 
 const UsersList:FC<UsersListProps> = ({users, handleChoose, currentEvent}) => {
   return (
-    <ul className='user-list'>
+    <ul className={cl.userList}>
       <h2 className='heading'>Active users</h2>
       {users.map((user, index) =>
         <UserItem index={index + 1} creator={currentEvent.leader === user.uid} key={user.uid} user={user} handleOpen={handleChoose}/>

@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { IEvent, IUserFull } from '../../types/types';
-import UsersList from '../AppComponents/UsersList';
+import UsersList from '../UI/UsersList/UsersList';
 import AppModal from '../UI/AppModal/AppModal'
 import SecondButton from '../UI/SecondButton/SecondButton';
 
