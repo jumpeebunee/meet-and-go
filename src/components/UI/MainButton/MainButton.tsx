@@ -2,14 +2,15 @@ import { FC } from 'react';
 import cl from './mainButton.module.css';
 
 interface MainButtonProps {
-  text: string,
-  handle?: () => void,
+  text: string;
+  form?: string;
+  handle?: () => void;
 }
 
-const MainButton:FC<MainButtonProps> = ({text, handle}) => {
+const MainButton:FC<MainButtonProps> = ({text, form, handle}) => {
   if (handle) {
     return (
-      <button onClick={() => handle()} className={cl.mainButton}>{text}</button>
+      <button form={form ? form : ''} onClick={() => handle()} className={cl.mainButton}>{text}</button>
     )
   } else {
     return (

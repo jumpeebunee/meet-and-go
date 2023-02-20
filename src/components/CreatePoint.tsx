@@ -13,6 +13,11 @@ import SecondButton from './UI/SecondButton/SecondButton';
 import CreateEventError from "./AppModals/ErrorModal";
 import { ratingConfig } from "../dataConfig/ratingConfig";
 import { getRandomColor } from "../helpers/getRandomColor";
+import { useForm } from "react-hook-form";
+import inputConfig from "../helpers/InputConfig";
+import ErrorMessage from "./UI/ErrorMessage/ErrorMessage";
+import RangeInput from "./UI/RangeInput/RangeInput";
+import ValueInput from "./UI/ValueInput/ValueInput";
 
 interface CreatePointProps {
   isOpen: boolean;
@@ -23,45 +28,44 @@ interface CreatePointProps {
 
 const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEventToUser}) => {
 
+  const { register, formState: {errors}, handleSubmit, reset } = useForm({});
   const user = useAppSelector(currentUserContent);
 
   const [price, setPrice] = useState('0');
   const [participants, setParticipants] = useState(2);
-  const [eventName, setEventName] = useState('');
-  const [eventLocation, setEventLocation] = useState('');
   const [startDate, setStartDate] = useState<Date>();
 
-  const handleCreate = async() => {
-    if (eventName.length > 2 && eventLocation.length > 2 && startDate) {
-      const eventId = nanoid();
-      const newEvent = {
-        id: eventId,
-        iconColor: getRandomColor(),
-        leader: user.uid,
-        title: eventName,
-        cords: eventCords,
-        place: eventLocation, 
-        date: startDate,
-        contribution: price,
-        participants: participants,
-        activeUsers: [user.uid],
-      }
-      await setDoc(doc(db, "events", eventId), newEvent);
-      await updateDoc(doc(db, "users", user.uid), {
-        createdMeets: user.createdMeets + 1,
-        currentCreated: user.currentCreated + 1,
-        reputation: user.reputation + ratingConfig.create,
-      })
-      addEventToUser(newEvent.id);
-      setPrice('0');
-      setParticipants(2);
-      setEventName('');
-      setEventLocation('');
-      setStartDate(undefined);
-      setIsOpen(false);
-    } else {
-      console.log('Error')
+  type ITest = {
+    eventLocation: string;
+    eventName: string;
+  }
+
+  const handleCreate = async(data: ITest) => {
+    const eventId = nanoid();
+    const newEvent = {
+      id: eventId,
+      iconColor: getRandomColor(),
+      leader: user.uid,
+      title: data.eventName,
+      cords: eventCords,
+      place: data.eventLocation, 
+      date: startDate,
+      contribution: price,
+      participants: participants,
+      activeUsers: [user.uid],
     }
+    await setDoc(doc(db, "events", eventId), newEvent);
+    await updateDoc(doc(db, "users", user.uid), {
+      createdMeets: user.createdMeets + 1,
+      currentCreated: user.currentCreated + 1,
+      reputation: user.reputation + ratingConfig.create,
+    })
+    addEventToUser(newEvent.id);
+    setPrice('0');
+    setParticipants(2);
+    setStartDate(undefined);
+    setIsOpen(false);
+    reset();
   }
 
   const handleAdd = () => {
@@ -72,6 +76,10 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
   const handleRemove = () => {
     if (participants <= 2) return;
     setParticipants(prev => prev - 1);
+  }
+
+  const onSubmit = (data: any) => {
+    handleCreate(data);
   }
 
   if (user.currentCreated >= 3) {
@@ -88,9 +96,23 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
       <AppModal style={{paddingTop: '60px'}} isOpen={isOpen} setIsOpen={setIsOpen}>
         <div className='create-pont__main'>
           <h2 data-testid="create-point" className='heading'>Create a new event <br/> with friends</h2>
-          <div className='create-point__info'>
-            <AppInput value={eventName} onChange={(e) => setEventName(e.target.value)} placeholder='Event name'/>
-            <AppInput value={eventLocation} onChange={(e) => setEventLocation(e.target.value)}  placeholder='Event location'/>
+          <form id="create-form" className='create-point__info' onSubmit={handleSubmit(onSubmit)}>
+            <div className='app-input__wrapper'>
+              <input
+                className='appInput'
+                placeholder="Event name"
+                {...register('eventName', inputConfig())}
+              />
+              <ErrorMessage message={errors?.email?.message as string}/>
+            </div>
+            <div className='app-input__wrapper'>
+              <input
+                className='appInput'
+                placeholder="Event name"
+                {...register('eventLocation', inputConfig())}
+              />
+              <ErrorMessage message={errors?.eventLocation?.message as string}/>
+            </div>
             <DatePicker 
               className='app-input'
               showTimeSelect
@@ -100,35 +122,24 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
               placeholderText="Event date"
               fixedHeight
               onChange={(date: Date) => setStartDate(date)} 
-            />
-          </div>
-          <div className='create-point__participants'>
-            <h2 className='second-heading'>Participants</h2>
-            <p>Number of participants</p>
-            <div className='create-point__point__participants-input'>
-              <button onClick={handleRemove}>-</button>
-              <div>{participants}</div>
-              <button onClick={handleAdd}>+</button>
-            </div>
-          </div>
-          <div className='create-point__money'>
-            <h2 className='second-heading'>Сontribution</h2>
-            <p>Initial payment</p>
-            <div className='create-point__money-input'>
-              <input 
-                className='create-point__range'
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                step="10"
-                min="0" max="100"
-                type="range"
-              />
-              <p>${price}</p>
-            </div>
-          </div>
+            /> 
+          </form>
+          <ValueInput
+            title="Participants"
+            body="Number of participants"
+            value={participants}
+            add={handleAdd}
+            remove={handleRemove}
+          />
+          <RangeInput
+            title="Сontribution"
+            body="Initial payment"
+            value={price}
+            setValue={setPrice}
+          />
         </div>
         <div className='create-point__buttons'>
-          <MainButton handle={() => handleCreate()} text='Continue'/>
+          <MainButton form="create-form" handle={() => handleSubmit(onSubmit)} text='Continue'/>
           <SecondButton handle={() => setIsOpen(false)} text='Close'/>
         </div>
       </AppModal>

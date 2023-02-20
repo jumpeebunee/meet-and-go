@@ -275,27 +275,6 @@ body {
   gap: 15px;
 }
 
-.create-point__participants {
-  margin-top: 25px;
-
-  p {
-    margin-top: 3px;
-  }
-}
-
-.create-point__point__participants-input {
-  margin-top: 25px;
-  @include app-flex();
-  
-  button {
-    width: 32px;
-    height: 32px;
-    color: #fff;
-    background: #282828;
-    border-radius: 4px;;
-  }
-}
-
 .create-pont__main {
   max-height: 80%;
   margin-bottom: 40px;
@@ -304,20 +283,6 @@ body {
   &::-webkit-scrollbar {
     width: 0;
   }
-}
-
-.create-point__money {
-  margin-top: 25px;
-}
-
-.create-point__money-input {
-  margin-top: 17px;
-  @include app-flex();
-}
-
-.create-point__range {
-  width: 100%;
-  max-width: 225px;
 }
 
 input[type="range"] {
