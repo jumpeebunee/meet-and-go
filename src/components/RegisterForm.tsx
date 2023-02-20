@@ -1,62 +1,69 @@
-import { FC, FormEvent } from 'react'
-import AppInput from './UI/AppInput/AppInput'
+import { FC } from 'react'
+import { useForm } from 'react-hook-form';
+import inputConfig from '../helpers/InputConfig';
+import { IRegister } from '../types/types';
+import ErrorMessage from './UI/ErrorMessage/ErrorMessage';
 import MainButton from './UI/MainButton/MainButton'
 
-type IInfo = {
-  password: string;
-  email: string;
-  name: string;
-}
-
-type IError = { 
-  password: boolean;
-  email: boolean;
-  name: boolean;
-}
-
 interface RegisterFormProps {
-  userInfo: IInfo;
-  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  setUserInfo: Function,
-  errors: IError,
+  handleSubmitt: (data: IRegister) => void;
   visible: boolean,
   handleVisible: Function,
 }
 
-const RegisterForm:FC<RegisterFormProps> = ({handleSubmit, setUserInfo, userInfo, errors, visible, handleVisible}) => {
+const RegisterForm:FC<RegisterFormProps> = ({handleSubmitt, visible, handleVisible}) => {
+
+  const { register, formState: {errors}, handleSubmit } = useForm({});
+
+  const onSubmit = (data: any) => {
+    handleSubmitt(data);
+  }
+
   return (
-    <form onSubmit={(e) => handleSubmit(e)} className="login-page__form">
+    <form onSubmit={handleSubmit(onSubmit)} className="login-page__form">
       <div className='login-page__input-wrapper'>
-        <AppInput
+        <input
+          className='appInput'
           style={{padding: '20px'}}
           placeholder="Username"
-          onChange={(e) => setUserInfo({...userInfo, name: e.target.value})}
+          {...register('username', inputConfig())}
         />
-        {errors.name && <p className='error'>Enter valid name</p>}
+        <ErrorMessage
+          message={errors?.username?.message as string}
+        />
       </div>
       <div className='login-page__input-wrapper'>
-        <AppInput
+        <input
+          className='appInput'
           style={{padding: '20px'}}
           placeholder="Email"
-          onChange={(e) => setUserInfo({...userInfo, email: e.target.value})}
+          {...register('email', {
+            required: 'Area is requred!',
+            pattern: {
+              value: /^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]{2,3}$/i,
+              message: 'invalid email address',
+            },
+          })}
         />
-        {errors.email && <p className='error'>Enter valid email</p>}
+        <ErrorMessage
+          message={errors?.email?.message as string}
+        />
       </div>
-      <div className='login-page__input-wrapper'>
-        <div className='login-page__password'>
-          <AppInput
-            autoComplete='true'
-            style={{padding: '20px'}}
-            placeholder="Password"
-            type={visible ? 'text' : 'password'}
-            onChange={(e) => setUserInfo({...userInfo, password: e.target.value})}
-          />
-          <button 
-            onClick={(e) => handleVisible(e)}
-            className={visible ? 'login-page__password-icon login-page__password-icon_v' : 'login-page__password-icon'}>
-          </button>
-        </div>
-        {errors.password && <p className='error'>Enter valid password</p>}
+      <div className='app-input__wrapper login-page__password login-page__input-wrapper'>
+        <input
+          className='appInput'
+          style={{padding: '20px'}}
+          placeholder="Password"
+          type={visible ? 'text' : 'password'}
+          {...register('password', inputConfig())}
+        />
+        <button 
+          onClick={(e) => handleVisible(e)}
+          className={visible ? 'login-page__password-icon login-page__password-icon_v' : 'login-page__password-icon'}>
+        </button>
+        <ErrorMessage
+          message={errors?.password?.message as string}
+        />
       </div>
       <MainButton text="Register"/>
     </form>

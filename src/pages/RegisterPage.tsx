@@ -1,11 +1,13 @@
-import {createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore"; 
 import { useState, FormEvent, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { auth } from '../firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, addUserContent, currentUser } from '../app/feautures/userSlice';
+import {createUserWithEmailAndPassword, updateProfile, signOut } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore"; 
+import { auth } from '../firebase';
 import { db } from '../firebase';
+import { IRegister } from "../types/types";
+import { baseUserInfo } from "../dataConfig/baseUserInfo";
 import LoginBanner from "../components/LoginBanner"
 import RegisterForm from '../components/RegisterForm';
 
@@ -16,8 +18,6 @@ const RegisterPage = () => {
   const user = useSelector(currentUser);
 
   const [visible, setVisible] = useState(false);
-  const [userInfo, setUserInfo] = useState({name: '', email: '', password: ''});
-  const [errors, setErrors] = useState({name: false, email: false, password: false})
   const [serverError, setServerError] = useState('');
 
   useEffect(() => {
@@ -32,58 +32,27 @@ const RegisterPage = () => {
     setVisible(prev => !prev);
   }
 
-  const validate = () => {
-    const name = userInfo.name.trim().length >= 3 && userInfo.name.trim().length <= 20;
-    const email = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]{2,3}$/.test((userInfo.email.trim()));
-    const password = userInfo.password.trim().length >= 6;
-
-    setErrors({name: !name, email: !email, password: !password});
-    return true ? (name && email && password) : false;
-  }
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setErrors({name: false, email: false, password: false});
-    if (validate()) {
-      try {
-        const response = await createUserWithEmailAndPassword(auth, userInfo.email, userInfo.password);
-        await updateProfile(response.user, { displayName: userInfo.name });
-        dispatch(addUser({username: userInfo.name, email: userInfo.email, uid: response.user.uid}));
-        await setDoc(doc(db, "users", response.user.uid), {
-          uid: response.user.uid,
-          username: userInfo.name,
-          email: userInfo.email,
-          reputation: 0,
-          phone: '',
-          town: '',
-          interests: [],
-          totalMeets: 0,
-          currentCreated: 0,
-          createdMeets: 0,
-          image: 'https://i.yapx.ru/VfaKB.png',
-          activeMeets: [],
-        });
-        dispatch((addUserContent({          
-          uid: response.user.uid,
-          username: userInfo.name,
-          email: userInfo.email,
-          reputation: 0,
-          phone: '',
-          town: '',
-          interests: [],
-          totalMeets: 0,
-          createdMeets: 0,
-          currentCreated: 0,
-          image: 'https://i.yapx.ru/VfaKB.png',
-          activeMeets: [],
-        })))
-        navigate('/');
+  const handleSubmit = async(data: IRegister) => {
+    try {
+      const response = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      await updateProfile(response.user, { displayName: data.username });
+      dispatch(addUser({username: data.username, email: data.email, uid: response.user.uid}));
+      await setDoc(doc(db, "users", response.user.uid), {
+        ...baseUserInfo,
+        uid: response.user.uid,
+        username: data.username,
+        email: data.email,
+      });
+      dispatch((addUserContent({   
+        ...baseUserInfo,       
+        uid: response.user.uid,
+        username: data.username,
+        email: data.email,
+      })))
+      navigate('/');
       } catch (e: any) {
         const errorMessage = e.message;
         setServerError(errorMessage);
-      }
-    } else {
-      return;
     }
   }
 
@@ -92,10 +61,7 @@ const RegisterPage = () => {
       <div className='login-page__content'>
         <LoginBanner/>
         <RegisterForm
-          userInfo={userInfo}
-          handleSubmit={handleSubmit}
-          setUserInfo={setUserInfo}
-          errors={errors}
+          handleSubmitt={handleSubmit}
           visible={visible}
           handleVisible={handleVisible}
         />

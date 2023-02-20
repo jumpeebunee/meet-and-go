@@ -13,7 +13,7 @@ interface LoginFormProps {
 
 const LoginForm:FC<LoginFormProps> = ({handleLogin, visible, handleVisible}) => {
 
-  const {register, formState: {errors}, handleSubmit, reset} = useForm({});
+  const { register, formState: {errors}, handleSubmit } = useForm({});
 
   const onSubmit = (data: any) => {
     handleLogin(data);
