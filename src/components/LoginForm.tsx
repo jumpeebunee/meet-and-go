@@ -1,45 +1,53 @@
 import { FC, FormEvent } from 'react'
-import AppInput from './UI/AppInput/AppInput'
+import { useForm } from 'react-hook-form';
+import inputConfig from '../helpers/InputConfig';
+import { ILogin } from '../types/types';
+import ErrorMessage from './UI/ErrorMessage/ErrorMessage';
 import MainButton from './UI/MainButton/MainButton'
 
-type IInfo = {
-  email: string,
-  password: string,
-}
-
 interface LoginFormProps {
-  userInfo: IInfo,
-  handleLogin: (e: FormEvent<HTMLFormElement>) => void;
-  setUserInfo: Function,
+  handleVisible: (e: FormEvent<HTMLButtonElement>) => void,
+  handleLogin: (testik: ILogin) => void;
   visible: boolean
-  handleVisible: Function,
-  errorMessage: string,
 }
 
-const LoginForm:FC<LoginFormProps> = ({userInfo, handleLogin, setUserInfo, visible, handleVisible, errorMessage}) => {
+const LoginForm:FC<LoginFormProps> = ({handleLogin, visible, handleVisible}) => {
+
+  const {register, formState: {errors}, handleSubmit, reset} = useForm({});
+
+  const onSubmit = (data: any) => {
+    handleLogin(data);
+  }
+
   return (
-    <form onSubmit={(e) => handleLogin(e)} className="login-page__form">
-      <AppInput
-        value={userInfo.email}
-        onChange={(e) => setUserInfo({...userInfo, email: e.target.value})}
-        style={{padding: '20px'}}
-        placeholder="Email"
-      />
-      <div className='login-page__password login-page__input-wrapper'>
-        <AppInput
-          value={userInfo.password}
-          onChange={(e) => setUserInfo({...userInfo, password: e.target.value})}
+    <form className='login-page__form' onSubmit={handleSubmit(onSubmit)}>
+      <div className='app-input__wrapper'>
+        <input 
           style={{padding: '20px'}}
-          placeholder="Password"
-          autoComplete='true'
-          type={visible ? 'text' : 'password'}
+          className='appInput'
+          placeholder="Email"
+          {...register('email', inputConfig())}
         />
-        <button 
-          onClick={(e) => handleVisible(e)}
-          className={visible ? 'login-page__password-icon login-page__password-icon_v' : 'login-page__password-icon'}>
-        </button>
+        <ErrorMessage
+          message={errors?.email?.message as string}
+        />
       </div>
-      {errorMessage && <div style={{marginTop: '-10px'}} className='error'>{errorMessage}</div>}
+      <div className='app-input__wrapper login-page__password login-page__input-wrapper'>
+        <input 
+          type={visible ? 'text' : 'password'}
+          style={{padding: '20px'}}
+          className='appInput'
+          placeholder="Password"
+          {...register('password', inputConfig())}
+        />
+        <ErrorMessage
+          message={errors?.password?.message as string}
+        />
+          <button 
+            onClick={(e) => handleVisible(e)}
+            className={visible ? 'login-page__password-icon login-page__password-icon_v' : 'login-page__password-icon'}>
+          </button>
+      </div>
       <MainButton text="Sign in"/>
     </form>
   )

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addUser, currentUser } from '../app/feautures/userSlice'
 import LoginBanner from "../components/LoginBanner"
 import LoginForm from '../components/LoginForm'
+import { ILogin } from '../types/types'
 
 const LoginPage = () => {
 
@@ -15,7 +16,6 @@ const LoginPage = () => {
 
   const [visible, setVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [userInfo, setUserInfo] = useState({email: '', password: ''});
 
   useEffect(() => {
     if (user.uid) {
@@ -29,29 +29,18 @@ const LoginPage = () => {
     setVisible(prev => !prev);
   }
 
-  const validate = () => {
-    const email = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z0-9]{2,3}$/.test((userInfo.email.trim()));
-    const password = userInfo.password.trim().length >= 6;
-    return true ? (email && password) : false;
-  }
-
-  const handleLogin = async(e: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async(testik: ILogin) => {
     setErrorMessage('');
-    e.preventDefault();
-    if (validate()) {
-      try {
-        const res = await signInWithEmailAndPassword(auth, userInfo.email, userInfo.password);
-        const user = res.user;
-        if (user.email && user.displayName && user.uid) {
-          dispatch(addUser({username: user.displayName, email: user.email, uid: user.uid}));
-        }
-        navigate('/');
-      } catch (error: any) {
-        const errorMessage = error.message;
-        setErrorMessage(errorMessage);
+    try {
+      const res = await signInWithEmailAndPassword(auth, testik.email, testik.password);
+      const user = res.user;
+      if (user.email && user.displayName && user.uid) {
+        dispatch(addUser({username: user.displayName, email: user.email, uid: user.uid}));
       }
-    } else {
-      setErrorMessage('Enter valid data');
+      navigate('/');
+    } catch (error: any) {
+      const errorMessage = error.message;
+      setErrorMessage(errorMessage);
     }
   }
  
@@ -60,13 +49,11 @@ const LoginPage = () => {
       <div className='login-page__content'>
         <LoginBanner/>
         <LoginForm
-          userInfo={userInfo}
           handleLogin={handleLogin}
-          setUserInfo={setUserInfo}
           visible={visible}
           handleVisible={handleVisible}
-          errorMessage={errorMessage}
         />
+        {errorMessage && <div className='error'>{errorMessage}</div>}
       </div>
       <p className='login-page__toggle'>Not a member? <Link to="/register"><span>Register now</span></Link></p>
     </div>

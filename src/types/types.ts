@@ -36,3 +36,8 @@ export type IUserFull = {
   image: string,
   activeMeets: string[],
 }
+
+export type ILogin = {
+  email: string;
+  password: string;
+}

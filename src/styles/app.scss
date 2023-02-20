@@ -359,11 +359,13 @@ input[type="range"]::-webkit-slider-thumb {
 
   h2 {
     @include app-font(700, 36px, 44px);
+    color: #fff;
   }
 
   p {
     margin-top: 10px;
     @include app-font(500, 18px, 22px);
+    color: #fff;
   }
 }
 
@@ -552,4 +554,22 @@ input[type="range"]::-webkit-slider-thumb {
   width: 22px;
   height: 18.5px;
   background-image: url(../assets/password-v.svg);
+}
+
+.app-input__wrapper {
+  width: 100%;
+}
+
+.appInput {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 18px;
+  line-height: 22px;
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(217, 217, 217, 0.2);
+  border-radius: 10px;
+}
+
+.appInput::placeholder {
+  color: rgba(0, 0, 0, 0.3);
 }
