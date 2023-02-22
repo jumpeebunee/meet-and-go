@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC, useMemo, useState } from "react"
 import { nanoid } from '@reduxjs/toolkit';
 import { setDoc, doc, updateDoc } from "firebase/firestore"; 
 import { db } from "../firebase";
@@ -6,7 +6,6 @@ import { useAppSelector } from "../app/hooks";
 import { currentUserContent } from "../app/feautures/userSlice";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AppInput from "./UI/AppInput/AppInput"
 import AppModal from './UI/AppModal/AppModal';
 import MainButton from './UI/MainButton/MainButton';
 import SecondButton from './UI/SecondButton/SecondButton';
@@ -18,12 +17,17 @@ import inputConfig from "../helpers/InputConfig";
 import ErrorMessage from "./UI/ErrorMessage/ErrorMessage";
 import RangeInput from "./UI/RangeInput/RangeInput";
 import ValueInput from "./UI/ValueInput/ValueInput";
+import axios from "axios";
 
 interface CreatePointProps {
   isOpen: boolean;
   eventCords: number[];
   setIsOpen: (arg: boolean) => void;
   addEventToUser: (id: string) => void;
+}
+
+type IAdress = {
+  eventName: string;
 }
 
 const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEventToUser}) => {
@@ -34,13 +38,21 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
   const [price, setPrice] = useState('0');
   const [participants, setParticipants] = useState(2);
   const [startDate, setStartDate] = useState<Date>();
+  const [dateError, setDateError] = useState('');
+  const [adressValue, setAdressValue] = useState('');
 
-  type ITest = {
-    eventLocation: string;
-    eventName: string;
-  }
+  const BASE_GEOCODE_URL = 'https://api.geocodify.com/v2/reverse';
+  const BASE_GEOCODE_KEY = '9164b0a5c6f2637aa65ef1a4285ca68779bfc9e2&lat'
 
-  const handleCreate = async(data: ITest) => {
+  useMemo(async() => {
+    if (eventCords.length) {
+      setAdressValue('СтройСервис, MS, Russia')
+      // const res = await axios.get(`${BASE_GEOCODE_URL}?api_key=${BASE_GEOCODE_KEY}&lat=${eventCords[0]}&lng=${eventCords[1]}`);
+      // setAdressValue(res.data.response.features[1].properties.label);
+    }
+  }, [eventCords])
+
+  const handleCreate = async(data: IAdress) => {
     const eventId = nanoid();
     const newEvent = {
       id: eventId,
@@ -48,7 +60,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
       leader: user.uid,
       title: data.eventName,
       cords: eventCords,
-      place: data.eventLocation, 
+      place: adressValue, 
       date: startDate,
       contribution: price,
       participants: participants,
@@ -61,11 +73,7 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
       reputation: user.reputation + ratingConfig.create,
     })
     addEventToUser(newEvent.id);
-    setPrice('0');
-    setParticipants(2);
-    setStartDate(undefined);
-    setIsOpen(false);
-    reset();
+    clearForm();
   }
 
   const handleAdd = () => {
@@ -79,7 +87,21 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
   }
 
   const onSubmit = (data: any) => {
-    handleCreate(data);
+    setDateError('');
+    if (startDate) {
+      handleCreate(data);
+    } else {
+      setDateError('Invalid date');
+    }
+  }
+
+  const clearForm = () => {
+    setPrice('0');
+    setAdressValue('');
+    setParticipants(2);
+    setStartDate(undefined);
+    setIsOpen(false);
+    reset();
   }
 
   if (user.currentCreated >= 3) {
@@ -103,26 +125,29 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
                 placeholder="Event name"
                 {...register('eventName', inputConfig())}
               />
-              <ErrorMessage message={errors?.email?.message as string}/>
+              <ErrorMessage message={errors?.eventName?.message as string}/>
             </div>
             <div className='app-input__wrapper'>
               <input
+                disabled
+                value={adressValue}
                 className='appInput'
-                placeholder="Event name"
-                {...register('eventLocation', inputConfig())}
+                placeholder="Event Location"
               />
-              <ErrorMessage message={errors?.eventLocation?.message as string}/>
             </div>
-            <DatePicker 
-              className='app-input'
-              showTimeSelect
-              minDate={new Date()}
-              selected={startDate as Date}
-              closeOnScroll={true}
-              placeholderText="Event date"
-              fixedHeight
-              onChange={(date: Date) => setStartDate(date)} 
-            /> 
+            <div className='app-input__wrapper'>
+              <DatePicker 
+                className='app-input'
+                showTimeSelect
+                minDate={new Date()}
+                selected={startDate as Date}
+                closeOnScroll={true}
+                placeholderText="Event date"
+                fixedHeight
+                onChange={(date: Date) => setStartDate(date)} 
+              />
+              <ErrorMessage message={dateError as string}/>
+            </div>
           </form>
           <ValueInput
             title="Participants"

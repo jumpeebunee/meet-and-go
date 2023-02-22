@@ -17,7 +17,6 @@ interface AppMapProps {
 }
 
 const AppMap:FC<AppMapProps> = ({events, image, handleOpen, setEventCords, setIsOpenCreateEvent, setIsOpenEvent, setCurrentEvent, setIsOpenActiveEvents}) => {
-
   const createEvent = (e:any) => {
     setIsOpenCreateEvent(true);
     setEventCords(e.get('coords'));
