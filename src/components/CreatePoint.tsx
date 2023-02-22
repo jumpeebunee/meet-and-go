@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react"
+import { FC, FormEvent, useMemo, useState } from "react"
 import { nanoid } from '@reduxjs/toolkit';
 import { setDoc, doc, updateDoc } from "firebase/firestore"; 
 import { db } from "../firebase";
@@ -18,6 +18,7 @@ import ErrorMessage from "./UI/ErrorMessage/ErrorMessage";
 import RangeInput from "./UI/RangeInput/RangeInput";
 import ValueInput from "./UI/ValueInput/ValueInput";
 import axios from "axios";
+import EventTypeList from "./UI/EventTypeList/EventTypeList";
 
 interface CreatePointProps {
   isOpen: boolean;
@@ -26,20 +27,16 @@ interface CreatePointProps {
   addEventToUser: (id: string) => void;
 }
 
-type IAdress = {
-  eventName: string;
-}
-
 const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEventToUser}) => {
 
-  const { register, formState: {errors}, handleSubmit, reset } = useForm({});
   const user = useAppSelector(currentUserContent);
 
   const [price, setPrice] = useState('0');
   const [participants, setParticipants] = useState(2);
   const [startDate, setStartDate] = useState<Date>();
-  const [dateError, setDateError] = useState('');
   const [adressValue, setAdressValue] = useState('');
+  const [eventName, setEventName] = useState('');
+  const [formError, setFormError] = useState('');
 
   const BASE_GEOCODE_URL = 'https://api.geocodify.com/v2/reverse';
   const BASE_GEOCODE_KEY = '9164b0a5c6f2637aa65ef1a4285ca68779bfc9e2&lat'
@@ -52,13 +49,13 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
     }
   }, [eventCords])
 
-  const handleCreate = async(data: IAdress) => {
+  const handleCreate = async() => {
     const eventId = nanoid();
     const newEvent = {
       id: eventId,
       iconColor: getRandomColor(),
       leader: user.uid,
-      title: data.eventName,
+      title: eventName,
       cords: eventCords,
       place: adressValue, 
       date: startDate,
@@ -86,13 +83,9 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
     setParticipants(prev => prev - 1);
   }
 
-  const onSubmit = (data: any) => {
-    setDateError('');
-    if (startDate) {
-      handleCreate(data);
-    } else {
-      setDateError('Invalid date');
-    }
+  const onSubmit = (e: FormEvent) => {
+    if (e) e.preventDefault()
+    if (validateForm()) handleCreate();
   }
 
   const clearForm = () => {
@@ -101,7 +94,22 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
     setParticipants(2);
     setStartDate(undefined);
     setIsOpen(false);
-    reset();
+  }
+
+  const validateForm = () => {
+    setFormError('');
+    if (eventName.length < 5 || eventName.length > 15) {
+      setFormError('Bad event name');
+      return false;
+    } else if (adressValue.length < 5) {
+      setFormError('Bad address');
+      return false;
+    } else if (!startDate) {
+      setFormError('Bad date event');
+      return false;
+    } else {
+      return true;
+    }
   }
 
   if (user.currentCreated >= 3) {
@@ -118,14 +126,16 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
       <AppModal style={{paddingTop: '60px'}} isOpen={isOpen} setIsOpen={setIsOpen}>
         <div className='create-pont__main'>
           <h2 data-testid="create-point" className='heading'>Create a new event <br/> with friends</h2>
-          <form id="create-form" className='create-point__info' onSubmit={handleSubmit(onSubmit)}>
+          <form id="create-form" className='create-point__info' onSubmit={(e) => onSubmit(e)}>
             <div className='app-input__wrapper'>
               <input
                 className='appInput'
+                style={{marginBottom: '10px'}}
                 placeholder="Event name"
-                {...register('eventName', inputConfig())}
+                value={eventName}
+                onChange={(e) => setEventName(e.target.value)}
               />
-              <ErrorMessage message={errors?.eventName?.message as string}/>
+              <EventTypeList onChange={setEventName}/>
             </div>
             <div className='app-input__wrapper'>
               <input
@@ -146,7 +156,6 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
                 fixedHeight
                 onChange={(date: Date) => setStartDate(date)} 
               />
-              <ErrorMessage message={dateError as string}/>
             </div>
           </form>
           <ValueInput
@@ -163,8 +172,9 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
             setValue={setPrice}
           />
         </div>
+        <ErrorMessage message={formError}/>
         <div className='create-point__buttons'>
-          <MainButton form="create-form" handle={() => handleSubmit(onSubmit)} text='Continue'/>
+          <MainButton form="create-form" handle={(e) => onSubmit(e as FormEvent)} text='Continue'/>
           <SecondButton handle={() => setIsOpen(false)} text='Close'/>
         </div>
       </AppModal>

@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import { FC, FormEvent } from 'react';
 import cl from './mainButton.module.css';
 
 interface MainButtonProps {
   text: string;
   form?: string;
-  handle?: () => void;
+  handle?: (e?: FormEvent) => void;
 }
 
 const MainButton:FC<MainButtonProps> = ({text, form, handle}) => {

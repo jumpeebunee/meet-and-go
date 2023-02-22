@@ -1,0 +1,17 @@
+.eventTypeList {
+  display: flex;
+  column-gap: 10px;
+  overflow-x: scroll;
+}
+
+.eventTypeList::-webkit-scrollbar {
+  width: 0px;  
+  height: 0px;
+}
+
+.eventTypeItem {
+  padding: 5px 16px;
+  background: #75D7A1;
+  border-radius: 4px;
+  color: #FFFFFF;
+}
