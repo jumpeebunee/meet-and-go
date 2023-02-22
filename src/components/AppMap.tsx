@@ -1,5 +1,5 @@
 import { YMaps, Map, GeolocationControl, SearchControl } from '@pbe/react-yandex-maps';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { API_KEY, MAP_CENTER } from '../dataConfig/dataConfig';
 import { IEvent } from '../types/types';
 import AccountBtn from './AccountBtn';
@@ -17,6 +17,9 @@ interface AppMapProps {
 }
 
 const AppMap:FC<AppMapProps> = ({events, image, handleOpen, setEventCords, setIsOpenCreateEvent, setIsOpenEvent, setCurrentEvent, setIsOpenActiveEvents}) => {
+
+  const [isSearch, setIsSearch] = useState(false);
+
   const createEvent = (e:any) => {
     setIsOpenCreateEvent(true);
     setEventCords(e.get('coords'));
@@ -40,14 +43,22 @@ const AppMap:FC<AppMapProps> = ({events, image, handleOpen, setEventCords, setIs
             openEvent={openEvent}
           />
         )}
-        <GeolocationControl options={{float: 'left'}}/>
-        <SearchControl options={{position: {bottom: 'true'},}}/>
+        <GeolocationControl options={{float: 'left', position: {top: 40, left: 30}}}/>
+        {isSearch && <SearchControl options={{position: {top: 40, right: 30}, noPlacemark: true}}/>}
       </Map>
-      <AccountBtn
-        image={image}
-        handleOpen={handleOpen}
-      />
-      <button onClick={() => setIsOpenActiveEvents(true)} className='app__events'><span></span></button> 
+      {!isSearch && <AccountBtn image={image} handleOpen={handleOpen}/>}
+      {!isSearch &&
+        <button 
+          onClick={() => setIsOpenActiveEvents(true)}
+          className='app__events'>
+            <span></span>
+        </button>
+      }
+      <button
+        onClick={() => setIsSearch(prev => !prev)}
+        className={isSearch ? 'app__search app__search_close' : 'app__search'}>
+          <span></span>
+      </button> 
     </YMaps>
   )
 }

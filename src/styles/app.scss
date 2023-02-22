@@ -538,3 +538,30 @@ input[type="range"]::-webkit-slider-thumb {
 .appInput::placeholder {
   color: rgba(0, 0, 0, 0.3);
 }
+
+.app__search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 81px;
+  height: 81px;
+  background-color: $black-main;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  span {
+    display: block;
+    width: 33px;
+    height: 33px;
+    background-image: url(../assets/search.svg);
+  }
+}
+
+.app__search_close {
+  span {
+    background-image: url(../assets/closeSearch.svg);
+  }
+}
