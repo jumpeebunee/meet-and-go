@@ -21,3 +21,23 @@
   border-radius: 4px;
 }
 
+@media (max-width: 457px) {
+  .valueInputContent {
+    margin-top: 5.47vw;
+  }
+  
+  .valueInputContent p {
+    margin-top: 0.66vw;
+  }
+  
+  .valueInputPointInput {
+    margin-top: 5.47vw;
+  }
+  
+  .valueInputPointInputButton {
+    width: 7.00vw;
+    height: 7.00vw;
+    border-radius: 0.88vw;
+  }
+  
+}

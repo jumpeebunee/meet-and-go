@@ -11,3 +11,15 @@
   width: 100%;
   max-width: 225px;
 }
+
+@media (max-width: 457px) {
+  .rangeInput {
+    margin-top: 5.47vw;
+  }
+  .rangeIpnutInput {
+    margin-top: 3.72vw;
+  }
+  .rangeInputRange {
+    max-width: 49.23vw;
+  }
+}

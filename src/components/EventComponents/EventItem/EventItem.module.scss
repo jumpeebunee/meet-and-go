@@ -21,3 +21,21 @@
   gap: 5px;
 }
 
+@media (max-width: 457px) {
+  .eventItem {
+    margin-top: 3.28vw;
+    padding-bottom: 3.28vw;
+  }
+  
+  .eventItemContent {
+    h3 {
+      font-size: 3.94vw;
+      line-height: 4.81vw;
+    }
+  }
+  
+  .eventItemAboutList {
+    margin-top: 2.19vw;
+    gap: 1.09vw;
+  }
+}

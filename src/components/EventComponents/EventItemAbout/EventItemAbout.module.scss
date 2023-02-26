@@ -22,5 +22,22 @@
     height: 100%;
     background-repeat: no-repeat;
     background-position: center center;
+    background-size: contain;
+  }
+}
+
+@media (max-width: 457px) {
+  .eventItemAbout {
+    gap: 2.19vw;
+  
+    p {
+      font-size: 3.06vw;
+      line-height: 3.72vw;
+    }
+  }
+  
+  .eventItemIcon {
+    width: 3.50vw;
+    height: 4.16vw;
   }
 }

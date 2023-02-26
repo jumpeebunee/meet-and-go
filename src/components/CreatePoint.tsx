@@ -12,8 +12,6 @@ import SecondButton from './UI/SecondButton/SecondButton';
 import CreateEventError from "./AppModals/ErrorModal";
 import { ratingConfig } from "../dataConfig/ratingConfig";
 import { getRandomColor } from "../helpers/getRandomColor";
-import { useForm } from "react-hook-form";
-import inputConfig from "../helpers/InputConfig";
 import ErrorMessage from "./UI/ErrorMessage/ErrorMessage";
 import RangeInput from "./UI/RangeInput/RangeInput";
 import ValueInput from "./UI/ValueInput/ValueInput";
@@ -43,9 +41,9 @@ const CreatePoint:FC<CreatePointProps> = ({isOpen, setIsOpen, eventCords, addEve
 
   useMemo(async() => {
     if (eventCords.length) {
-      setAdressValue('СтройСервис, MS, Russia')
-      // const res = await axios.get(`${BASE_GEOCODE_URL}?api_key=${BASE_GEOCODE_KEY}&lat=${eventCords[0]}&lng=${eventCords[1]}`);
-      // setAdressValue(res.data.response.features[1].properties.label);
+      // setAdressValue('СтройСервис, MS, Russia')
+      const res = await axios.get(`${BASE_GEOCODE_URL}?api_key=${BASE_GEOCODE_KEY}&lat=${eventCords[0]}&lng=${eventCords[1]}`);
+      setAdressValue(res.data.response.features[1].properties.label);
     }
   }, [eventCords])
 

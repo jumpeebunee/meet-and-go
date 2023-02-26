@@ -49,12 +49,14 @@ const AppMap:FC<AppMapProps> = ({events, image, handleOpen, setEventCords, setIs
       {!isSearch && <AccountBtn image={image} handleOpen={handleOpen}/>}
       {!isSearch &&
         <button 
+          data-testid="events-btn"
           onClick={() => setIsOpenActiveEvents(true)}
           className='app__events'>
             <span></span>
         </button>
       }
       <button
+        data-testid="search-btn"
         onClick={() => setIsSearch(prev => !prev)}
         className={isSearch ? 'app__search app__search_close' : 'app__search'}>
           <span></span>

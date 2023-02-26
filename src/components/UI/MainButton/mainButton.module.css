@@ -8,3 +8,12 @@
   line-height: 22px;
   color: #FFFFFF;
 }
+
+@media (max-width: 457px) {
+  .mainButton {
+    padding: 4.38vw 8.75vw;
+    border-radius: 8.75vw;
+    font-size: 3.94vw;
+    line-height: 4.81vw;
+  }
+}

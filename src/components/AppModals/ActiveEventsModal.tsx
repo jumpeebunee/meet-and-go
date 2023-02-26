@@ -37,7 +37,7 @@ const ActiveEventsModal:FC<ActiveEventsModalProps> = ({isOpen, setIsOpen, events
 
   if (events.length) {
     return (
-      <AppModal style={{paddingTop: '60px'}} isOpen={isOpen} setIsOpen={setIsOpen}>
+      <AppModal dataTest="modal-events" style={{paddingTop: '60px'}} isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className='active-events__list'>
         <h2 data-testid="create-point" className='heading'>Active events</h2>
           <ul>
@@ -56,6 +56,7 @@ const ActiveEventsModal:FC<ActiveEventsModalProps> = ({isOpen, setIsOpen, events
   } else {
     return (
       <CreateEventError
+        dataTest="modal-eventsNull"
         error='Not found events'
         message="You don't have any active events, join and then they will appear here"
         isOpen={isOpen}

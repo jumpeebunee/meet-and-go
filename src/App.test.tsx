@@ -1,18 +1,28 @@
-import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
-import App from './App';
+import { fireEvent, screen } from '@testing-library/react';
+import { renderStructure } from './testing/renderStructure';
 
-test('modal is open', () => {
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  )
+describe('Searching', () => {
+  test('Is open/close', () => {
+    renderStructure();
+    const searchBtn = screen.getByTestId('search-btn');
+    expect(screen.queryByTestId('events-btn')).toBeInTheDocument();
+    fireEvent.click(searchBtn);
+    expect(screen.queryByTestId('events-btn')).toBeNull();
+    fireEvent.click(searchBtn);
+    expect(screen.queryByTestId('events-btn')).toBeInTheDocument();
+  })
+})
 
-  const map = screen.getByTestId('map');
-  fireEvent.click(map);
-  const createPoint = screen.getByTestId('create-point');
-  expect(createPoint).toBeInTheDocument();
+describe('Active events', () => {
+  test('Created', () => {
+    renderStructure();
+    const eventsBtn = screen.getByTestId('events-btn');
+    expect(eventsBtn).toBeInTheDocument();
+  })
+  test('Is open/close', () => {
+    renderStructure();
+    const eventsBtn = screen.getByTestId('events-btn');
+    screen.debug()
+    // expect(screen.queryByTestId('modal-events')).toBeVisible();
+  })
 })

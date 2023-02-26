@@ -11,3 +11,12 @@
 .appInput::placeholder {
   color: rgba(0, 0, 0, 0.3);
 }
+
+@media (max-width: 457px) {
+  .appInput {
+    padding: 3.06vw 4.38vw;
+    font-size: 3.94vw;
+    line-height: 4.81vw;
+    border-radius: 2.19vw;
+  }
+}

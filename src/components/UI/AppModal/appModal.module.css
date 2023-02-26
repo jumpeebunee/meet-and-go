@@ -30,3 +30,17 @@
   background: #FFFFFF;
   border-radius: 50px;
 }
+
+
+@media (max-width: 457px) {
+  .appModal {
+    backdrop-filter: blur(0.44vw);
+  }
+  
+  .appModalContent {
+    width: 80.53vw;
+    height: 153.17vw;
+    padding: 8.75vw;
+    border-radius: 10.94vw;
+  }
+}

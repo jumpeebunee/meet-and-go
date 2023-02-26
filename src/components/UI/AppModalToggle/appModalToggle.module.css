@@ -41,3 +41,25 @@
   font-size: 36px;
   line-height: 44px;
 }
+
+@media (max-width: 457px) {
+  .appModal {
+    backdrop-filter: blur(0.44vw);
+  }
+
+  .appModalContent {
+    width: 80.53vw;
+    padding: 15.32vw 15.75vw;
+    border-radius: 10.94vw;
+  }
+  
+  .appModalBtns {
+    gap: 3.28vw;
+  }
+  
+  .appModalHeading {
+    margin-bottom: 5.47vw;
+    font-size: 7.88vw;
+    line-height: 9.63vw;
+  }
+}
