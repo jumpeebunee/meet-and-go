@@ -8,7 +8,7 @@
 
 <image src="./public/intro.jpg" alt="intro-img" width="600px">
 
-Live Demo (NEED LINK). The application allows you to search for events by interests. Create events. Meet and search for public companies.
+[Live demo](https://meet-and-go.netlify.app). The application allows you to search for events by interests. Create events. Meet and search for public companies.
 
 ## Opportunities
 
